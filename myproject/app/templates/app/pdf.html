@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Order</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header img {
+            max-width: 150px;
+        }
+        .header .details {
+            margin-top: 10px;
+        }
+        .details {
+            display: flex;
+            justify-content: space-between;
+        }
+        .details div {
+            font-size: 14px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .total td {
+            text-align: right;
+            font-weight: bold;
+        }
+        .total .label {
+            text-align: left;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 12px;
+            color: #888;
+        }
+        .right {
+            text-align: right;
+        }
+        .left{
+            text-align: left;
+        }
+        .center{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <!-- Logo Section -->
+            <img src="https://marketplace.canva.com/EAFaFUz4aKo/2/0/1600w/canva-yellow-abstract-cooking-fire-free-logo-JmYWTjUsE-Q.jpg" alt="Logo">
+            <div class="details">
+                <div>Date: <strong>{{ date|date:"d/m/Y H:i:s" }}</strong></div>
+                <div>Command ID: <strong>{{ cmd_id }}</strong></div>
+            </div>
+        </div>
+
+        <div class="details">
+            <div>Phone: <strong>{{ contact_phone }}</strong></div>
+            <div><strong>{{ website }}</strong></div>
+        </div>
+
+        <!-- Item List Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th class="center">Count</th>
+                    <th class="center">Item Name</th>
+                    <th class="center">Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Item Rows -->
+                {% for item in items %}
+                    <tr>
+                        <td class="right">{{ item.count }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.price }} MAD</td>
+                    </tr>
+                {% endfor %}
+                <tr class="total">
+                    <td colspan="2" class="label">Total</td>
+                    <td class="left">{{ total }} MAD</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer">
+        Thank you for your business!
+    </div>
+
+</body>
+</html>

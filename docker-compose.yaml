@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  django:
+    container_name: django_app
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./myproject/:/usr/src/app
+      - ./uploads/:/uploads
+    # environment:
+    #   - DEBUG=1
+    #   - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1
+    # command: gunicorn --bind 0.0.0.0:8000 myproject.wsgi:application
