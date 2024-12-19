@@ -5,30 +5,62 @@ from django.template.loader import render_to_string
 from weasyprint import HTML
 from datetime import datetime
 from django.http import JsonResponse
+from .models import Order
+from django.shortcuts import render
 
-def generate_pdf(request):
-    # Render the HTML template with context
-    items = [
-        {'count': 2, 'name': 'Item A', 'price': 15.00},
-        {'count': 1, 'name': 'Item B', 'price': 30.00},
-        {'count': 3, 'name': 'Item C', 'price': 7.50},
-    ]
-    total = sum(item['count'] * item['price'] for item in items)
+def find_order(request):
+    if request.method != 'GET':
+        return JsonResponse({'error': 'Invalid HTTP method'}, status=405)
+    try:
+        orders = Order.objects.all()
+        return render(request, 'app/find_order.html', {
+        'orders': [
+            {
+                'id': order.id,
+                'date': order.date,
+                'total': sum(item.count * item.price for item in order.items.all())
+            }
+            for order in orders
+        ]
+        })
+    except Order.DoesNotExist:
+        return JsonResponse({'error': 'Order not found'}, status=404)
+
+def search_order(request, order_id):
+    if request.method != 'GET':
+        return JsonResponse({'error': 'Invalid HTTP method'}, status=405)
+    # order_id = request.GET.get('id')
+    try:
+        order = Order.objects.get(id=order_id)
+        items = [{'name': item.name, 'count': item.count, 'price': item.price} for item in order.items.all()]
+
+        context = {
+            'date': order.date,
+            'id': order.id,
+            'total': sum(item['count'] * item['price'] for item in items),
+        }
+        return JsonResponse(context)
+    except Order.DoesNotExist:
+        return JsonResponse({'error': 'Order not found'}, status=404)
+
+def generate_pdf(request, order_id):
+    # order_id = request.GET.get('id')
+    print(f"Order ID: {order_id}")
+    order = Order.objects.get(id=order_id)
+    items = [{'name': item.name, 'count': item.count, 'price': item.price, 'total_price': item.count * item.price} for item in order.items.all()]
 
     context = {
-        'date': datetime.now(),
-        'cmd_id': 'CMD12345',
+        'date': order.date,
+        'cmd_id': order.id,
         'items': items,
-        'total': total,
+        'total': sum(item['count'] * item['price'] for item in items),
         'contact_phone': '+212613276891',
-        'website': 'www.staff.com',
+        'website': 'www.staff.com'
     }
     html_content = render_to_string('app/pdf.html', context)
 
-    # Convert the HTML content to a PDF
     pdf = HTML(string=html_content).write_pdf()
 
-    # Create a response object with the generated PDF
     response = HttpResponse(pdf, content_type='application/pdf')
     response['Content-Disposition'] = 'filename="example.pdf"'
     return response
@@ -36,7 +68,7 @@ def generate_pdf(request):
 def serve_file(request):
     file_path = os.path.join('/uploads/', 'file.pdf')
     file_handle = open(file_path, 'rb')
-    
+
     return FileResponse(file_handle, content_type='application/pdf')
 
 def download_file(request):
@@ -47,4 +79,4 @@ def download_file(request):
     return FileResponse(file_handle, as_attachment=True, filename='file.pdf')
 
 def index(request):
-    return HttpResponse("Hello, World! This is my new app.")
+    return render(request, 'index.html', {'title': 'Home Page'})

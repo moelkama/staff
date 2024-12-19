@@ -5,7 +5,24 @@ from django.http import JsonResponse
 from .models import Order
 from .models import Item
 
-def dynamic_form_view(request):
+def UpdateOrder(request):
+    if request.method == 'PUT':
+        try:
+            order_id = request.GET.get('id')
+            print(f"Order ID: {order_id}")
+            order = Order.objects.get(id=order_id)
+            items = json.loads(request.body)
+            order.items.all().delete()
+            for item in items:
+                Item.objects.create(name=item['name'], count=item['count'], price=item['price'], order=order)
+            order.save()
+            return JsonResponse({'message': 'Object updated successfully', 'id': order_id})
+        except Order.DoesNotExist:
+            return JsonResponse({'error': 'Object not found'}, status=404)
+
+    return JsonResponse({'error': 'Invalid HTTP method'}, status=405) 
+
+def CreateOrder(request):
     if request.method == 'POST':
         items = json.loads(request.body)
         order = Order.objects.create()
@@ -13,9 +30,19 @@ def dynamic_form_view(request):
             Item.objects.create(name=item['name'], count=item['count'], price=item['price'], order=order)
         return JsonResponse({'id': order.id}, status=201)
 
-    return render(request, 'app/dynamic_form.html')
+    if request.method == 'GET':
+        return render(request, 'app/dynamic_form.html')
 
+    return JsonResponse({'error': 'Invalid HTTP method'}, status=405)
 
-def get(request):
-    orders = Order.objects.get(id=request.GET['id'])
-    return JsonResponse({'id': order.id, 'items': [{'name': item.name, 'count': item.count, 'price': item.price} for item in order.items.all()]})
+def DeleteOrder(request):
+    if request.method == 'DELETE':
+        try:
+            data = json.loads(request.body)
+            order_id = data['id']
+            order = Order.objects.get(id=order_id)
+            order.delete()
+            return JsonResponse({'message': 'Object deleted successfully'})
+        except Order.DoesNotExist:
+            return JsonResponse({'error': 'Object not found'}, status=404)
+    return JsonResponse({'error': 'Invalid HTTP method'}, status=405)

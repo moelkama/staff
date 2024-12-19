@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script> -->
     <title>Purchase Order</title>
     <style>
         body {
@@ -52,11 +53,11 @@
             background-color: #f4f4f4;
         }
         .total td {
-            text-align: right;
+            text-align: left;
             font-weight: bold;
         }
         .total .label {
-            text-align: left;
+            text-align: center;
         }
         .footer {
             text-align: center;
@@ -70,8 +71,18 @@
         .left{
             text-align: left;
         }
+        .price{
+            color: #888;
+            font-weight: 200;
+        }
         .center{
             text-align: center;
+        }
+        .flex{
+            display: flex;
+        }
+        .justify-between{
+            justify-content: space-between;
         }
     </style>
 </head>
@@ -98,7 +109,8 @@
                 <tr>
                     <th class="center">Count</th>
                     <th class="center">Item Name</th>
-                    <th class="center">Price</th>
+                    <th class="center">unit Price</th>
+                    <th class="center">Total Price</th>
                 </tr>
             </thead>
             <tbody>
@@ -107,12 +119,28 @@
                     <tr>
                         <td class="right">{{ item.count }}</td>
                         <td>{{ item.name }}</td>
-                        <td>{{ item.price }} MAD</td>
+                        <td >
+                            <div class="flex justify-between price">
+                                <span>{{ item.price }}</span>
+                                <!-- <span>MAD</span> -->
+                            </div>
+                        </td>
+                        <td>
+                            <div class="flex justify-between">
+                                <span>{{ item.total_price }}</span>
+                                </span>MAD</span>
+                            </div>
+                        </td>
                     </tr>
                 {% endfor %}
                 <tr class="total">
-                    <td colspan="2" class="label">Total</td>
-                    <td class="left">{{ total }} MAD</td>
+                    <td colspan="3" class="label center">Total</td>
+                    <td >
+                        <div class="flex justify-between">
+                            <span>{{ total }}</span>
+                            <span>MAD</span>
+                        </div>
+                    </td>
                 </tr>
             </tbody>
         </table>

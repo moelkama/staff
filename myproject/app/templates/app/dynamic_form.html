@@ -5,56 +5,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamic Item Form</title>
+    <!-- Font Awesome CDN -->
+    <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"
+/>
+
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
 </head>
 <body>
-    <div class="">
-        <form id="purchase-form" class="absolute top-40">
-            {% csrf_token %}
-            <div id="items-container" class="bg-yellow-600">
-                <!-- First Item Row -->
-                <div class="flex item-row">
-                    <div class="">
-                        <label>Item Name</label>
-                        <input type="text" name="item_name" value="Default Item">
-                    </div>
-                    <div class="">
-                        <label>Count</label>
-                        <input type="number" name="item_count" value="1">
-                    </div>
-                    <div class="">
-                        <label>Prix</label>
-                        <input type="number" name="item_prix" value="10">
-                    </div>
-                    <button type="button" class="bg-gray-500" onclick="removeItem(this)">Remove</button>
+    <div id="container" class="my-20 min-h-screen flex flex-col gap-4 items-center justify-center">
+        <form id="purchase-form">
+            <!-- {% csrf_token %} -->
+            <div id="items-container" class="flex gap-2 flex-col">
+                <!-- <div class="flex border border-gray-300 p-2 gap-2">
+                    <label>Item Name</label>
+                    <label>Count</label>
+                    <label>Prix</label>
+                </div> -->
+                <div class="item-row flex rounded-xl bg-gray-200 p-4 gap-2">
+                    <input required class="w-60" type="text" name="item_name" value="1111111">
+                    <input required class="w-24" type="number" name="item_count" value="11">
+                    <input required class="w-24" type="number" name="item_prix" value="11">
+                    <button type="button" class="flex justify-center items-center ml-4 text-2xl text-red-500 hover:text-red-300" onclick="removeItem(this)"><i class="fa-solid fa-trash"></i></button>
                 </div>
             </div>
             <div class="flex flex-col mt-2 gap-2">
-                <button type="button" class="h-10 bg-red-500" onclick="addItemRow()">Add Item</button>
-                <button type="submit" class="h-10 flex-1 bg-blue-400">Submit Order</button>
+                <button type="button" class="h-10 bg-blue-200 font-bold text-lg border hover:border-slate-800 hover:bg-transparent" onclick="addItemRow()">Add Item</button>
+                <button id="submit_button_id" type="submit" class="h-10 bg-green-400 font-bold text-lg border hover:border-slate-800 hover:bg-transparent">Submit Order</button>
             </div>
         </form>
+        <div id="pdf_par_id" class="flex gap-2 hidden">
+            <a class="bg-green-400 w-40 h-10 rounded-xl flex justify-center items-center font-bold text-lg border hover:border-slate-800 hover:bg-transparent" id="imprim_pdf_id" href="/dynamic_form">another order</a>
+            <a class="bg-green-400 w-40 h-10 rounded-xl flex justify-center items-center font-bold text-lg border hover:border-slate-800 hover:bg-transparent" id="imprim_pdf_id" target="_blank" href="">imprim PDF</a>
+            <a class="bg-green-400 w-40 h-10 rounded-xl flex justify-center items-center font-bold text-lg border hover:border-slate-800 hover:bg-transparent" id="view_pdf_id" target="_blank" href="">view PDF</a>
+        </div>
     </div>
 
     <script>
+        let order_id = null;
         function addItemRow() {
             const container = document.getElementById('items-container');
             const row = document.createElement('div');
-            row.classList.add('flex', 'item-row');
+            row.classList.add('item-row', 'flex', 'rounded-xl', 'bg-gray-200', 'p-4', 'gap-2');
             row.innerHTML = `
-                        <div class="">
-                            <label>Item Name</label>
-                            <input type="text" name="item_name" value="Default Item">
-                        </div>
-                        <div class="">
-                            <label>Count</label>
-                            <input type="number" name="item_count" value="1">
-                        </div>
-                        <div class="">
-                            <label>Prix</label>
-                            <input type="number" name="item_prix" value="10">
-                        </div>
-                        <button type="button" class="bg-gray-500" onclick="removeItem(this)">Remove</button>
+                    <input required class="w-60" type="text" name="item_name" value="">
+                    <input required class="w-24" type="number" name="item_count" value="">
+                    <input required class="w-24" type="number" name="item_prix" value="">
+                    <button type="button" class="flex justify-center items-center ml-4 text-2xl text-red-500 hover:text-red-300" onclick="removeItem(this)"><i class="fa-solid fa-trash"></i></button>
             `;
             container.appendChild(row);
         }
@@ -63,26 +61,34 @@
             button.closest('.item-row').remove();
         }
 
-        document.getElementById('purchase-form').addEventListener('submit', function (e) {
-            e.preventDefault();
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('purchase-form').addEventListener('submit', function (e) {
+                e.preventDefault();
+                console.log('---------------Form Submitted---------------');
+                
+                const items = [];
+                const rows = document.querySelectorAll('.item-row');
 
-            const items = [];
-            const rows = document.querySelectorAll('.item-row');
-
-            rows.forEach(row => {
-                const name = row.querySelector('[name="item_name"]').value;
-                const count = row.querySelector('[name="item_count"]').value;
-                const prix = row.querySelector('[name="item_prix"]').value;
-
-                items.push({
-                    name: name,
-                    count: count,
-                    price: prix
+                rows.forEach(row => {
+                    const name = row.querySelector('[name="item_name"]').value;
+                    const count = row.querySelector('[name="item_count"]').value;
+                    const prix = row.querySelector('[name="item_prix"]').value;
+                    
+                    items.push({
+                        name: name,
+                        count: count,
+                        price: prix
                 });
             });
             console.log(items);
-            fetch("{% url 'dynamic_form' %}", {
-                method: 'POST',
+            let url = '/dynamic_form';
+            let method = 'POST';
+            if (order_id) {
+                url = `/update_order?id=${order_id}`;
+                method = 'PUT';
+            }
+            fetch(url, {
+                method: method,
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': '{{ csrf_token }}'
@@ -91,11 +97,20 @@
             })
             .then(response => response.json())
             .then(data => {
+                order_id = data.id;
+                console.log('order_id:::::::::::', order_id);
+                document.getElementById('view_pdf_id').href = `/generate_pdf/${order_id}`;
+                // document.getElementById('imprim_pdf_id').href = `/generate_pdf/${order_id}&imprim=1`;
+                document.getElementById('pdf_par_id').classList.remove('hidden');
+                document.getElementById('submit_button_id').innerHTML = 'Update Order';
                 console.log(data);
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Error:', error)
+            });
+            });
         });
-    </script>
-
-</body>
-</html>
+        </script>
+        
+        </body>
+        </html>
