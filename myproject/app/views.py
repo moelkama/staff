@@ -7,13 +7,34 @@ from datetime import datetime
 from django.http import JsonResponse
 from .models import Order
 from django.shortcuts import render
+from django.utils import timezone
+from django.db.models import Q
+from datetime import timedelta
 
-def find_order(request):
+def create_order(request):
+    return render(request, 'app/create_order.html', {'categories': [{'name': 'Item Name', 'src': 'https://d2v5dzhdg4zhx3.cloudfront.net/web-assets/images/storypages/primary/ProductShowcasesampleimages/JPEG/Product+Showcase-1.jpg'}, {'name': 'Item Name', 'src': 'https://d2v5dzhdg4zhx3.cloudfront.net/web-assets/images/storypages/primary/ProductShowcasesampleimages/JPEG/Product+Showcase-1.jpg'}, {'name': 'Item Name', 'src': 'https://d2v5dzhdg4zhx3.cloudfront.net/web-assets/images/storypages/primary/ProductShowcasesampleimages/JPEG/Product+Showcase-1.jpg'}, {'name': 'Item Name', 'src': 'https://d2v5dzhdg4zhx3.cloudfront.net/web-assets/images/storypages/primary/ProductShowcasesampleimages/JPEG/Product+Showcase-1.jpg'}]})
+
+def find_order(request, period_time):
     if request.method != 'GET':
         return JsonResponse({'error': 'Invalid HTTP method'}, status=405)
     try:
-        orders = Order.objects.all()
+        today = timezone.now().date()
+        if period_time == 'TO_DAY':
+            orders = Order.objects.filter(date__date=today).order_by('-date')
+        elif period_time == 'YESTERDAY':
+            yesterday = today - timedelta(days=1)
+            orders = Order.objects.filter(date__date=yesterday).order_by('-date')
+        elif period_time == 'LAST_WEEK':
+            last_week = today - timedelta(days=7)
+            orders = Order.objects.filter(date__date__gte=last_week , date__date__lte=today).order_by('-date')
+        elif period_time == 'LAST_MONTH':
+            last_month = today - timedelta(days=30)
+            orders = Order.objects.filter(date__date__gte=last_month , date__date__lte=today).order_by('-date')
+        else:
+            orders = Order.objects.all().order_by('-date')
         return render(request, 'app/find_order.html', {
+        'period_time': period_time,
+        'period_times': ['TO_DAY', 'YESTERDAY', 'LAST_WEEK', 'LAST_MONTH'],
         'orders': [
             {
                 'id': order.id,
@@ -29,7 +50,6 @@ def find_order(request):
 def search_order(request, order_id):
     if request.method != 'GET':
         return JsonResponse({'error': 'Invalid HTTP method'}, status=405)
-    # order_id = request.GET.get('id')
     try:
         order = Order.objects.get(id=order_id)
         items = [{'name': item.name, 'count': item.count, 'price': item.price} for item in order.items.all()]
@@ -44,7 +64,6 @@ def search_order(request, order_id):
         return JsonResponse({'error': 'Order not found'}, status=404)
 
 def generate_pdf(request, order_id):
-    # order_id = request.GET.get('id')
     print(f"Order ID: {order_id}")
     order = Order.objects.get(id=order_id)
     items = [{'name': item.name, 'count': item.count, 'price': item.price, 'total_price': item.count * item.price} for item in order.items.all()]

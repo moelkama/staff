@@ -1,0 +1,52 @@
+<!-- base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <!-- Tailwind CSS CDN -->
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <title>Dynamic Item Form</title>
+    <!-- Font Awesome CDN -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"
+        />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Global Navigation Bar -->
+    <nav class="border-b border-gray-300 text-white py-4">
+        <div class="container mx-auto flex items-center px-4">
+            <!-- Logo -->
+            <img class="h-16 w-16" src="https://marketplace.canva.com/EAFaFUz4aKo/2/0/1600w/canva-yellow-abstract-cooking-fire-free-logo-JmYWTjUsE-Q.jpg" alt="Logo">
+            <div class="flex-1 flex justify-center items-center">
+                <ul class="flex gap-8">
+                    <!-- <a href="/" class="text-xl text-black flex justify-center items-center h-10 w-24 bg-green-400 rounded-md transition duration-700 ease-in-out hover:bg-transparent border hover:border-slate-800">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </a> -->
+                    <a href="/find_order/LAST_WEEK" class="text-xl text-black flex justify-center items-center h-10 w-24 bg-green-400 rounded-md transition duration-700 ease-in-out hover:bg-transparent border hover:border-slate-800">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </a>
+                    <a href="/create" class="text-xl text-black flex justify-center items-center h-10 w-24 bg-green-400 rounded-md transition duration-700 ease-in-out hover:bg-transparent border hover:border-slate-800">
+                        <i class="fa-solid fa-cash-register"></i>
+                    </a>
+                    <a href="/dynamic_form" class="text-xl text-black flex justify-center items-center h-10 w-24 bg-blue-400 rounded-md transition duration-700 ease-in-out hover:bg-transparent border hover:border-slate-800">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </a>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container mx-auto mt-8 px-4">
+        {% block content %}
+        <!-- Content to be overridden by child templates -->
+        {% endblock %}
+    </div>
+</body>
+</html>

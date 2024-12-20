@@ -1,19 +1,7 @@
-<!-- dynamic_form.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Item Form</title>
-    <!-- Font Awesome CDN -->
-    <link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"
-/>
+{% extends 'base.html' %}
 
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
-</head>
-<body>
+{% block title %}Home{% endblock %}
+{% block content %}
     <div id="container" class="my-20 min-h-screen flex flex-col gap-4 items-center justify-center">
         <form id="purchase-form">
             <!-- {% csrf_token %} -->
@@ -30,9 +18,13 @@
                     <button type="button" class="flex justify-center items-center ml-4 text-2xl text-red-500 hover:text-red-300" onclick="removeItem(this)"><i class="fa-solid fa-trash"></i></button>
                 </div>
             </div>
-            <div class="flex flex-col mt-2 gap-2">
-                <button type="button" class="h-10 bg-blue-200 font-bold text-lg border hover:border-slate-800 hover:bg-transparent" onclick="addItemRow()">Add Item</button>
-                <button id="submit_button_id" type="submit" class="h-10 bg-green-400 font-bold text-lg border hover:border-slate-800 hover:bg-transparent">Submit Order</button>
+            <div class="flex mt-2 gap-2">
+                <button type="button" class="min-w-40 flex-1 h-10 bg-blue-200 font-bold text-2xl border hover:border-slate-800 hover:bg-transparent" onclick="addItemRow()">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+                <button id="submit_button_id" type="submit" class="min-w-40 flex-1 h-10 bg-green-400 font-bold text-2xl border hover:border-slate-800 hover:bg-transparent">
+                    <i class="fa-solid fa-check"></i>
+                </button>
             </div>
         </form>
         <div id="pdf_par_id" class="flex gap-2 hidden">
@@ -73,7 +65,7 @@
                     const name = row.querySelector('[name="item_name"]').value;
                     const count = row.querySelector('[name="item_count"]').value;
                     const prix = row.querySelector('[name="item_prix"]').value;
-                    
+
                     items.push({
                         name: name,
                         count: count,
@@ -102,7 +94,7 @@
                 document.getElementById('view_pdf_id').href = `/generate_pdf/${order_id}`;
                 // document.getElementById('imprim_pdf_id').href = `/generate_pdf/${order_id}&imprim=1`;
                 document.getElementById('pdf_par_id').classList.remove('hidden');
-                document.getElementById('submit_button_id').innerHTML = 'Update Order';
+                // document.getElementById('submit_button_id').innerHTML = 'Update Order';
                 console.log(data);
             })
             .catch(error => {
@@ -110,7 +102,5 @@
             });
             });
         });
-        </script>
-        
-        </body>
-        </html>
+    </script>
+{% endblock %}

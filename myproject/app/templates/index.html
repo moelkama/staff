@@ -1,25 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+{% block content %}
     <div id="container" class="flex flex-col items-center justify-center h-screen">
         <div id="search-container" class="mb-40 h-10 w-[660px] flex flex-col gap-8">
-            <div class="flex items-center justify-between">
+            <div class="flex items-center justify-evenly">
                 <input id="search-input" class="font-bold w-4/5 border px-4 border-gray-300 rounded-xl" type="text" placeholder="Search Order">
-                <button id="search-button" class="font-bold rounded-xl h-10 flex px-4 justify-center items-center bg-green-400 hover:border hover:border-slate-800 hover:bg-transparent">Search</button>
+                <button id="search-button" class="font-bold rounded-xl h-10 flex px-4 justify-center items-center bg-green-400 hover:border hover:border-slate-800 hover:bg-transparent">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
                 <!-- <a target="_blank" href="/" id="search-a" class="font-bold rounded-xl h-10 flex px-4 justify-center items-center bg-green-400 hover:border hover:border-slate-800 hover:bg-transparent">Search</a> -->
             </div>
             <div id="search-result" class="w-full">
             </div>
-        </div>
-        <div class="grid grid-cols-2 gap-4">
-            <a class="font-bold rounded-xl h-10 flex px-4 justify-center items-center bg-green-400 hover:border hover:border-slate-800 hover:bg-transparent" href="/dynamic_form">Create Order</a>
-            <a class="font-bold rounded-xl h-10 flex px-4 justify-center items-center bg-green-400 hover:border hover:border-slate-800 hover:bg-transparent" href="/find_order">find Order</a>
         </div>
     </div>
     <script>
@@ -73,8 +66,12 @@
                                     <td class="text-center px-6 py-4 whitespace-nowrap text-sm text-gray-500">${order.total}</td>
                                     
                                     <td class="flex justify-evenly items-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                        <a class="text-center font-black w-28 inline-block px-4 py-2 text-black bg-blue-400 hover:bg-gray-600 rounded-md focus:outline-none border hover:border-slate-800 hover:bg-transparent", href="">imprim</a>
-                                        <a href="/generate_pdf/{{order.id}}" class="text-center font-black w-28 inline-block px-4 py-2 text-black bg-green-400 hover:bg-blue-600 rounded-md focus:outline-none border hover:border-slate-800 hover:bg-transparent" , target='_blank')">View</a>
+                                        <a class="text-center font-black w-28 inline-block px-4 py-2 text-black bg-blue-400 rounded-md border hover:border-slate-800 hover:bg-transparent", href="">
+                                            <i class="fa-solid fa-print"></i>
+                                        </a>
+                                        <a href="/generate_pdf/{{order.id}}" class="text-center font-black w-28 inline-block px-4 py-2 text-black bg-green-400 rounded-md border hover:border-slate-800 hover:bg-transparent" , target='_blank')">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -87,5 +84,4 @@
             });
         });
     </script>
-</body>
-</html>
+{% endblock %}

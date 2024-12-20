@@ -8,7 +8,9 @@ services:
       - "8000:8000"
     volumes:
       - ./myproject/:/usr/src/app
-      - ./uploads/:/uploads
+      # - ./uploads/:/uploads
+    env_file:
+      - .env
     # environment:
     #   - DEBUG=1
     #   - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1
