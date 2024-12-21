@@ -14,7 +14,7 @@ def UpdateOrder(request):
             items = json.loads(request.body)
             order.items.all().delete()
             for item in items:
-                Item.objects.create(name=item['name'], count=item['count'], price=item['price'], order=order)
+                Item.objects.create(name=item.name, count=item.count, price=item.price, order=order)
             order.save()
             return JsonResponse({'message': 'Object updated successfully', 'id': order_id})
         except Order.DoesNotExist:
@@ -25,8 +25,10 @@ def UpdateOrder(request):
 def CreateOrder(request):
     if request.method == 'POST':
         items = json.loads(request.body)
+        # print(f"Items:::::::::::::::::::::::: {items}")
         order = Order.objects.create()
         for item in items:
+            # print(f"Item:::::::::::::::::::::::: {item}")
             Item.objects.create(name=item['name'], count=item['count'], price=item['price'], order=order)
         return JsonResponse({'id': order.id}, status=201)
 
@@ -35,11 +37,10 @@ def CreateOrder(request):
 
     return JsonResponse({'error': 'Invalid HTTP method'}, status=405)
 
-def DeleteOrder(request):
+def DeleteOrder(request, order_id):
     if request.method == 'DELETE':
         try:
-            data = json.loads(request.body)
-            order_id = data['id']
+            print(f"delet Order ID::::::::::::::: {order_id}")
             order = Order.objects.get(id=order_id)
             order.delete()
             return JsonResponse({'message': 'Object deleted successfully'})

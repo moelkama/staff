@@ -10,7 +10,7 @@ urlpatterns = [
     path('search_order/<str:order_id>/', views.search_order, name='search_order'),
     path('dynamic_form', dynamic_form.CreateOrder, name='dynamic_form'),
     path('update_order', dynamic_form.UpdateOrder, name='update_order'),
-    path('delete_order', dynamic_form.DeleteOrder, name='delete_order'),
+    path('delete_order/<str:order_id>/', dynamic_form.DeleteOrder, name='delete_order'),
     path('find_order/<str:period_time>', views.find_order, name='find_order'),
     path('create', views.create_order, name='create_order'),
 ]
