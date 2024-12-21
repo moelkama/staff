@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Order, Item
+from .models import Order, Item, Article
 
 @admin.register(Order)  # Registering the model
 class OrderAdmin(admin.ModelAdmin):
@@ -15,3 +15,7 @@ class OrderAdmin(admin.ModelAdmin):
 @admin.register(Item)  # Registering the model
 class ItemAdmin(admin.ModelAdmin):
     list_display = ('name', 'count', 'price', 'order')  # Fields to show in admin list view
+
+@admin.register(Article)  # Registering the model
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = ('article_name', 'price', 'src')
