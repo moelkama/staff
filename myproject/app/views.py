@@ -110,10 +110,16 @@ def generate_pdf(request, order_id):
     return response
 
 def serve_file(request):
-    file_path = os.path.join('/uploads/', 'file.pdf')
-    file_handle = open(file_path, 'rb')
+    # path = request.GET.get('path')
+    # print(f"Path::::::::::::: myproject{path}")
+    path = f"/myproject/media/uploads/elkamal.jpeg"
+    if os.path.exists(f"myproject{path}"):
+        return FileResponse(open(f"myproject{path}", 'rb'))
+    return JsonResponse({"error": "File not found"}, status=404)
+    # file_path = os.path.join('/uploads/', 'file.pdf')
+    # file_handle = open(file_path, 'rb')
 
-    return FileResponse(file_handle, content_type='application/pdf')
+    # return FileResponse(file_handle, content_type='application/pdf')
 
 def download_file(request):
     file_path = os.path.join('/uploads/', 'file.pdf')

@@ -5,7 +5,7 @@ from . import dynamic_form
 urlpatterns = [
     path('', views.index, name='index'),
     # path('download_file', views.download_file),
-    # path('serve_file', views.serve_file),
+    path('serve_file', views.serve_file),
     path('generate_pdf/<str:order_id>/', views.generate_pdf, name='generate_pdf'),
     path('search_order/<str:order_id>/', views.search_order, name='search_order'), #api
     path('dynamic_form', dynamic_form.CreateOrder, name='dynamic_form'), #api

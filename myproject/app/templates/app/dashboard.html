@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
+</head>
+<body>
+    <!-- articles-->
+    <div class="h-screen w-screen flex justify-center items-center">
+        <form id="article-form-id" class="flex flex-col gap-4" enctype="multipart/form-data">
+          <div class="flex gap-4 justify-center items-center">
+            <div class="flex flex-col gap-4">
+              <input
+                required
+                id="article_name-input-id"
+                value="elkamal"
+                type="text"
+                class="h-10 rounded-xl border border-gray-300"
+                name="article_name"
+                placeholder="Name"
+              />
+              <input
+                required
+                id="article_price-input-id"
+                value="15"
+                type="number"
+                class="h-10 rounded-xl border border-gray-300"
+                name="price"
+                placeholder="Price"
+              />
+              <select id="article_type-input-id" class="h-10 rounded-xl border border-gray-300">
+                <option value="TYPE 1">TYPE 1</option>
+                <option value="TYPE 2">TYPE 2</option>
+                <option value="TYPE 3">TYPE 3</option>
+                <option value="TYPE 4">TYPE 4</option>
+              </select>
+              <select id="article_category-input-id" class="h-10 rounded-xl border border-gray-300">
+                <option value="CATEGORY 1">CATEGORY 1</option>
+                <option value="CATEGORY 2">CATEGORY 2</option>
+                <option value="CATEGORY 3">CATEGORY 3</option>
+                <option value="CATEGORY 4">CATEGORY 4</option>
+              </select>
+              <div class="flex gap-4">
+                <input
+                  required
+                  id="article_height-input-id"
+                  value="1"
+                  type="number"
+                  class="w-28 h-10 rounded-xl border border-gray-300"
+                  name="height"
+                  placeholder="height"
+                />
+                <input
+                  required
+                  id="article_width-input-id"
+                  value="0.6"
+                  type="number"
+                  class="w-28 h-10 rounded-xl border border-gray-300"
+                  name="width"
+                  placeholder="width"
+                />
+              </div>
+              <input
+                required
+                id="how_many_available-input-id"
+                value="15"
+                type="number"
+                class="h-10 rounded-xl border border-gray-300"
+                name="how_many_available"
+                placeholder="Quantity"
+              />
+            </div>
+            <div>
+              <input
+                id="img-input-id"
+                onchange="previewImage(event)"
+                accept="image/*"
+                type="file"
+                name="image"
+                class="block w-28 h-12 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none hover:bg-gray-100"
+              />
+              <img
+                id="imagePreview"
+                class="hidden h-80 object-cover rounded-xl"
+                src="https://d2v5dzhdg4zhx3.cloudfront.net/web-assets/images/storypages/primary/ProductShowcasesampleimages/JPEG/Product+Showcase-1.jpg"
+                alt="image"
+              />
+            </div>
+          </div>
+          <button
+            type="submit"
+            class="bg-green-500 border hover:border-gray-400 hover:bg-transparent text-xl hover:text-black text-white font-bold py-2 px-4 rounded"
+          >
+            <i class="fa-solid fa-check"></i>
+          </button>
+        </form>
+      </div>
+      <script>
+        function previewImage(event) {
+          const file = event.target.files[0];
+          const preview = document.getElementById("imagePreview");
+      
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function () {
+              preview.src = reader.result;
+              preview.classList.remove("hidden");
+            };
+            reader.readAsDataURL(file);
+          } else {
+            preview.classList.add("hidden");
+          }
+        }
+      
+        document.getElementById("article-form-id").addEventListener("submit", (e) => {
+            e.preventDefault();
+        
+            const form = e.target;
+            const formData = new FormData(form);
+            
+            const selectedType = document.getElementById("article_type-input-id").value;
+            const selectedCategory = document.getElementById("article_category-input-id").value;
+
+            formData.append("type", selectedType); // Add type to formData
+            formData.append("category", selectedCategory); 
+            // formData.forEach((value, key) => {
+            //     console.log(`${key}:`, value);
+            //     });
+            
+            fetch("/create_article", {
+                method: "POST",
+                headers: {
+                "X-CSRFToken": "{{ csrf_token }}",
+                },
+                body: formData,
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("Success:", data);
+                // alert("Article created successfully.");
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                alert("Failed to create the article.");
+            });
+        });
+      </script>      
+</body>
+</html>
