@@ -1,8 +1,8 @@
-from django.shortcuts import render
 from django.http import JsonResponse
+from .models import Order
+from django.shortcuts import render
 from django.utils import timezone
 from datetime import timedelta
-from .models import Order
 
 def find_order(request, period_time):
     if request.method != 'GET':
@@ -23,19 +23,16 @@ def find_order(request, period_time):
         else:
             orders = Order.objects.all().order_by('-date')
         return render(request, 'app/find_order.html', {
-        'period_time': period_time,
-        'period_times': ['TO_DAY', 'YESTERDAY', 'LAST_WEEK', 'LAST_MONTH'],
-        'orders': [
-            {
-                'id': order.id,
-                'date': order.date,
-                'total': sum(item.count * item.price for item in order.items.all())
-            }
-            for order in orders
-        ]
+            'period_time': period_time,
+            'period_times': ['TO_DAY', 'YESTERDAY', 'LAST_WEEK', 'LAST_MONTH'],
+            'orders': [
+                {
+                    'id': order.id,
+                    'date': order.date,
+                    'total': sum(item.count * item.price for item in order.items.all())
+                }
+                for order in orders
+            ]
         })
     except Order.DoesNotExist:
         return JsonResponse({'error': 'Order not found'}, status=404)
-
-def index(request):
-    return render(request, 'index.html', {'title': 'Home Page'})
