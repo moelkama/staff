@@ -23,7 +23,7 @@ urlpatterns = [
     
     
     #oreder
-    path('search_order/<str:order_id>/', search_order.search_order, name='search_order'), #api
+    # path('search_order/<str:order_id>/', search_order.search_order, name='search_order'), #api
     path('update_order/<str:order_id>', update_order.UpdateOrder, name='update_order'), #api , render
     path('dynamic_form', create_order.CreateOrder, name='dynamic_form'), #api
     path('delete_order/<str:order_id>/', delete_order.DeleteOrder, name='delete_order'), #api

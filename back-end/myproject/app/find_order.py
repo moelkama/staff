@@ -22,17 +22,18 @@ def find_order(request, period_time):
             orders = Order.objects.filter(date__date__gte=last_month , date__date__lte=today).order_by('-date')
         else:
             orders = Order.objects.all().order_by('-date')
-        return render(request, 'app/find_order.html', {
-            'period_time': period_time,
-            'period_times': ['TO_DAY', 'YESTERDAY', 'LAST_WEEK', 'LAST_MONTH'],
-            'orders': [
-                {
-                    'id': order.id,
-                    'date': order.date,
-                    'total': sum(item.count * item.price for item in order.items.all())
-                }
-                for order in orders
-            ]
-        })
+        return JsonResponse(
+            {
+                'period_time': period_time,
+                'period_times': ['TO_DAY', 'YESTERDAY', 'LAST_WEEK', 'LAST_MONTH'],
+                'orders': [
+                    {
+                        'id': order.id,
+                        'date': order.date,
+                        'total': sum(item.count * item.price for item in order.items.all())
+                    }
+                    for order in orders
+                ]
+            })
     except Order.DoesNotExist:
         return JsonResponse({'error': 'Order not found'}, status=404)
