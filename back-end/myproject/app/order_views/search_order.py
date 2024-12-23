@@ -18,3 +18,4 @@ def search_order(request, order_id):
         return JsonResponse(context)
     except Order.DoesNotExist:
         return JsonResponse({'error': 'Order not found'}, status=404)
+    return JsonResponse({'error': 'Internal Server Error'}, status=500)

@@ -6,7 +6,8 @@ function App() {
   return (
     <>
       <Nav />
-      <div className='min-h-screen flex items-center flex-col'>
+      <h1 className='text-6xl text-ellipsis text-black font-black'>FROM REACT</h1>
+      <div className='mt-20 flex items-center flex-col gap-4'>
         <Search />
       </div>
       {/* <Create /> */}

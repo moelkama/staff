@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 
 function Table( {orders} ) {
     if (orders.length === 0)
-        return <div class="text-2xl font-black text-center text-red-500">No Orders Found</div>
+        return <div className="text-2xl font-black text-center text-red-500">No Orders Found</div>
     return (
         <table className="table-auto border-collapse border border-gray-200">
             <thead className="bg-gray-200">
@@ -28,7 +28,7 @@ function Table( {orders} ) {
 
                     const hours = String(date.getUTCHours()).padStart(2, '0'); 
                     const minutes = String(date.getUTCMinutes()).padStart(2, '0');
-                    const seconds = String(date.getUTCSeconds()).padStart(2, '0');
+                    // const seconds = String(date.getUTCSeconds()).padStart(2, '0');
 
                     const date_string = `${day}/${month}/${year} ${hours}:${minutes}`; //:${seconds}
                     return (
@@ -41,7 +41,7 @@ function Table( {orders} ) {
                                 <a className="text-center text-xl transition duration-700 ease-in-out font-black inline-block px-6 py-2 bg-blue-400 rounded-md border hover:border-slate-800 hover:bg-transparent" href="/">
                                     <FontAwesomeIcon icon={faPrint} />
                                 </a>
-                                <a href="/generate_pdf/{{order.id}}" className="text-center text-xl transition duration-700 ease-in-out font-black inline-block px-6 py-2 bg-green-400 hover:bg-blue-600 rounded-md border hover:border-slate-800 hover:bg-transparent" target='_blank'>
+                                <a href="/api/generate_pdf/{order.id}" className="text-center text-xl transition duration-700 ease-in-out font-black inline-block px-6 py-2 bg-green-400 hover:bg-blue-600 rounded-md border hover:border-slate-800 hover:bg-transparent" target='_blank'>
                                     <FontAwesomeIcon icon={faEye} />
                                 </a>
                             </td>
@@ -53,76 +53,66 @@ function Table( {orders} ) {
     );
 }
 
-export const fetchData = async (url, setResults, setLoading) => {
-    try
-    {
-        setLoading(true);
-        const response = await fetch(url);
-        if (!response.ok)
-        {
-            console.log(`errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr${response.status}`);
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json(); // Parse the JSON response
-        setResults(data); // Update the results
-    }
-    catch (error)
-    {
-      console.error("Erroreeeeeeeeeeerrrrrrrrrrrrrr fetching data");
-    }
-    finally
-    {
-      setLoading(false); // Hide the loading state
-    }
-  };
-
 
 export default function Search() {
-    const [search_results, set_serach_results] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [period_time, setPeriod_time] = useState("LAST_WEEK");
-    const [search_id, setSearch_id] = useState("");
+    const [orders, set_orders] = useState([]);
+    const [loading, set_loading] = useState(true);
+    const [period_time, set_period_time] = useState("LAST_WEEK");
+    const [period_times, set_period_times] = useState([]);
+    const [search_id, set_search_id] = useState("D4XEPC");
 
     useEffect(() => {
         const url = `/api/find_order/${period_time}`;
-        fetchData(url, set_serach_results, setLoading);
+        fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            set_orders(data.orders);
+            set_period_time(data.period_time);
+            set_period_times(data.period_times);
+            set_loading(false);
+        })
     }, [period_time]);
 
     const handleInputChange = (event) => {
         const search = event.target.value;
-        setSearch_id(search);
+        console.log("id::::::::::::::::", search);
+        set_search_id(search);
     }
 
     const handleChange = (event) => {
-        setPeriod_time(event.target.value);
+        set_period_time(event.target.value);
         console.log("Selected value:", period_time);
     };
 
     const sumbit_search = () => {
-        console.log("Search ID:", search_id);
         const url = `/api/search_order/${search_id}`;
-        fetchData(url, set_serach_results, setLoading);
+        fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            set_orders([data]);
+        })
+        .catch(() => {
+            console.error('Errorrrrrrrrrrrrrrrrrr');
+        });
     }
     if (loading) return <h1>Loading...</h1>;
-    if (!search_results) return <h1>Error</h1>;
+    // if (!search_results) return <h1>Error</h1>;
     return (
         <>
             <div id="search-container" className="h-10 w-[660px] flex flex-col gap-8">
                 <div className="flex items-center justify-evenly">
-                    <input onChange={handleInputChange} className="font-bold w-4/5 border px-4 border-gray-300 rounded-xl" type="text" placeholder="Search Order"></input>
+                    <input onChange={handleInputChange} className="font-bold h-10 w-4/5 border px-4 border-gray-300 rounded-xl" type="text" placeholder="Search Order"></input>
                     <button onClick={sumbit_search} className="font-bold rounded-xl h-10 flex px-4 justify-center items-center bg-green-400 hover:border hover:border-slate-800 hover:bg-transparent">
                         <FontAwesomeIcon icon={faMagnifyingGlass} />
                     </button>
                 </div>
             </div>
             <div className="flex gap-8">
-                <select onChange={handleChange} defaultValue={search_results.period_time} className="w-40 h-10 rounded-xl border border-gray-300">
-                    {search_results.period_times.map( (pt) => <option key={pt} value={pt}>{pt}</option>)}
+                <select onChange={handleChange} defaultValue={period_time} className="w-40 h-10 rounded-xl border border-gray-300">
+                    {period_times.map( (pt) => <option key={pt} value={pt}>{pt}</option>)}
                 </select>
-                {/* onClick={Search_by_period_time} */}
-                {/* <button  className="w-40 h-10 bg-green-400 rounded-xl hover:border hover:border-slate-800 hover:bg-transparent">Search</button> */}
             </div>
-            <Table orders={search_results.orders} />
+            <Table orders={orders} />
         </>
     );
 }
