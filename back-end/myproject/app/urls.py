@@ -10,7 +10,7 @@ urlpatterns = [
     path('create_article', create_article.create_article, name='create_article'), #api
     # path('dashboard', dynamic_form.dashboard, name='dashboard'), #render
     path('find_order/<str:period_time>', find_order.find_order, name='find_order'), #api
-    path('create', create.create_order, name='create_order'), #api , render
+    path('get_categories', create.get_categories, name='get_categories'), #api , render
     
     
     #generate_pdf
