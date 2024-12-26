@@ -3,6 +3,11 @@ from django.http import JsonResponse
 from django.utils import timezone
 from datetime import timedelta
 from .models import Order
+from django.views.decorators.csrf import ensure_csrf_cookie
+
+@ensure_csrf_cookie
+def get_csrf_token(request):
+    return JsonResponse({"message": "CSRF token set"})
 
 def find_order(request, period_time):
     if request.method != 'GET':

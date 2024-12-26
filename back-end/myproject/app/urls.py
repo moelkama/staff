@@ -21,11 +21,13 @@ urlpatterns = [
     path('media/<str:dir>/<str:file>', serve_file.serve_file),
     # path('download_file', views.download_file),
     
+    ###############csrf
+    path("csrf/", views.get_csrf_token, name="get_csrf_token"),
     
     #oreder
     path('search_order/<str:order_id>', search_order.search_order, name='search_order'), #api
     path('update_order/<str:order_id>', update_order.UpdateOrder, name='update_order'), #api , render
-    path('dynamic_form', create_order.CreateOrder, name='dynamic_form'), #api
+    path('create_order', create_order.create_order, name='dynamic_form'), #api
     path('delete_order/<str:order_id>/', delete_order.DeleteOrder, name='delete_order'), #api
-    path('delete_order/<str:order_id>/', delete_order.DeleteOrder, name='delete_order'), #api
+    # path('delete_order/<str:order_id>/', delete_order.DeleteOrder, name='delete_order'), #api
 ]
