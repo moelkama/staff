@@ -41,6 +41,3 @@ def find_order(request, period_time):
         })
     except Order.DoesNotExist:
         return JsonResponse({'error': 'Order not found'}, status=404)
-
-def index(request):
-    return render(request, 'index.html', {'title': 'Home Page'})

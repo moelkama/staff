@@ -9,8 +9,8 @@ MEDIA_URL = '/media/'
 def create_article(request):
     if request.method == 'POST':
         ## check if the article already exists
-        article_name = request.POST.get('article_name')
-        if Article.objects.filter(article_name=article_name).exists():
+        article_name = request.POST.get('name')
+        if Article.objects.filter(name=article_name).exists():
             return JsonResponse({'error': 'Article name already exists'}, status=400)
         image = request.FILES.get("image")
 
@@ -25,7 +25,7 @@ def create_article(request):
         else:
             return JsonResponse({"error": "Image is required"}, status=400)
         article = Article.objects.create(
-            article_name=article_name,
+            name=article_name,
             price=request.POST.get('price'),
             src=f"{MEDIA_URL}{file_path}",
             type=request.POST.get('type'),
@@ -35,7 +35,7 @@ def create_article(request):
             how_many_available=request.POST.get('how_many_available'),
             )
         return JsonResponse({
-            'article_name': article.article_name,
+            'name': article.name,
             'article_id': article.item_id,
             'price': article.price,
             'src': article.src,

@@ -3,14 +3,13 @@ import Nav from "./components/Nav";
 import Create from "./components/Create";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useEffect } from 'react';
+import Dashboard from "./components/Dashboard";
 
 function App() {
-  
+
   useEffect(() => {
-    fetch("/csrf/", {
-      method: "GET",
-      credentials: "include", // Include cookies
-    }).then((response) => response.json())
+    fetch("/csrf/")
+    .then((response) => response.json())
     .then((data) => {
       console.log('django respons::::::::::::', data);
     })
@@ -27,6 +26,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Search />} />
         <Route path="/create" element={<Create />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>
     </Router>
   );

@@ -18,4 +18,4 @@ class ItemAdmin(admin.ModelAdmin):
 
 @admin.register(Article)  # Registering the model
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('article_name', 'price', 'src')
+    list_display = ('name', 'price', 'src', 'type', 'category', 'height', 'width', 'how_many_available', 'how_many_times_ordered')  # Fields to show in admin list view
