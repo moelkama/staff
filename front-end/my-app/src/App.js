@@ -27,7 +27,12 @@ function App() {
         <Route path="/" element={<Search />} />
         <Route path="/create" element={<Create />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="*" element={<h1>Not Found</h1>} />
+        <Route path="*" element={
+          <div className='flex justify-center items-center h-screen w-screen'>
+            <h1 className='text-6xl text-ellipsis text-black font-black'>FROM REACT</h1>
+            <h1 className='text-6xl text-ellipsis text-red-500 font-black'>404</h1>
+          </div>
+        } />
       </Routes>
     </Router>
   );

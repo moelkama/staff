@@ -24,6 +24,9 @@ def create_article(request):
             print(f"File path: {file_path}")
         else:
             return JsonResponse({"error": "Image is required"}, status=400)
+        # file_path = 'https://d2v5dzhdg4zhx3.cloudfront.net/web-assets/images/storypages/primary/ProductShowcasesampleimages/JPEG/Product+Showcase-1.jpg'
+        # print(f"body: {request.body}")
+        # print(f"File path: {file_path}\r\n Article name: {request.POST.get('name')} \r\n Price: {request.POST.get('price')} \r\n Type: {request.POST.get('type')} \r\n Category: {request.POST.get('category')} \r\n Height: {request.POST.get('height')} \r\n Width: {request.POST.get('width')} \r\n How many available: {request.POST.get('how_many_available')}")
         article = Article.objects.create(
             name=article_name,
             price=request.POST.get('price'),
@@ -36,7 +39,7 @@ def create_article(request):
             )
         return JsonResponse({
             'name': article.name,
-            'article_id': article.item_id,
+            'id': article.id,
             'price': article.price,
             'src': article.src,
             'created_at': article.created_at,

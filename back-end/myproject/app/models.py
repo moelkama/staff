@@ -33,7 +33,7 @@ class Order(models.Model):
 class   Item(models.Model):
     name  = models.CharField(max_length=50)
     count = models.PositiveIntegerField()
-    price = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=6, decimal_places=2)  # Number
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
 
     def __str__(self):
