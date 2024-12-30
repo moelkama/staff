@@ -21,12 +21,10 @@ function App() {
   return (
     <Router>
       <Nav />
-      {/* <h1 className='text-6xl text-ellipsis text-black font-black'>FROM REACT</h1> */}
-      {/* <div className='mt-20 flex items-center flex-col gap-4'> */}
       <Routes>
         <Route path="/" element={<Search />} />
         <Route path="/create" element={<Create />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard/*" element={<Dashboard />} />
         <Route path="*" element={
           <div className='flex justify-center items-center h-screen w-screen'>
             <h1 className='text-6xl text-ellipsis text-black font-black'>FROM REACT</h1>

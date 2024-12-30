@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass, faCashRegister } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass, faCashRegister, faChartPie } from "@fortawesome/free-solid-svg-icons";
 
 export default function Nav() {
     return (
@@ -14,6 +14,9 @@ export default function Nav() {
                         </Link>
                         <Link to="/create" className="text-xl text-black flex justify-center items-center h-10 w-24 bg-green-400 rounded-md transition duration-700 ease-in-out hover:bg-transparent border hover:border-slate-800">
                             <FontAwesomeIcon icon={faCashRegister} />
+                        </Link>
+                        <Link to="/dashboard" className="text-xl text-black flex justify-center items-center h-10 w-24 bg-green-400 rounded-md transition duration-700 ease-in-out hover:bg-transparent border hover:border-slate-800">
+                            <FontAwesomeIcon icon={faChartPie} />
                         </Link>
                     </ul>
                 </div>
