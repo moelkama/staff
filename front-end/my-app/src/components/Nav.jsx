@@ -4,7 +4,7 @@ import { faMagnifyingGlass, faCashRegister, faChartPie } from "@fortawesome/free
 
 export default function Nav() {
     return (
-        <nav className="border-b border-gray-300 text-white py-4">
+        <nav className="border-b border-gray-300 text-white py-4 mb-10">
             <div className="container mx-auto flex items-center px-4">
                 <img className="h-16 w-16" src="https://marketplace.canva.com/EAFaFUz4aKo/2/0/1600w/canva-yellow-abstract-cooking-fire-free-logo-JmYWTjUsE-Q.jpg" alt="Logo"></img>
                 <div className="flex-1 flex justify-center items-center">
@@ -15,7 +15,7 @@ export default function Nav() {
                         <Link to="/create" className="text-xl text-black flex justify-center items-center h-10 w-24 bg-green-400 rounded-md transition duration-700 ease-in-out hover:bg-transparent border hover:border-slate-800">
                             <FontAwesomeIcon icon={faCashRegister} />
                         </Link>
-                        <Link to="/dashboard" className="text-xl text-black flex justify-center items-center h-10 w-24 bg-green-400 rounded-md transition duration-700 ease-in-out hover:bg-transparent border hover:border-slate-800">
+                        <Link to="/dashboard/Articles" className="text-xl text-black flex justify-center items-center h-10 w-24 bg-green-400 rounded-md transition duration-700 ease-in-out hover:bg-transparent border hover:border-slate-800">
                             <FontAwesomeIcon icon={faChartPie} />
                         </Link>
                     </ul>

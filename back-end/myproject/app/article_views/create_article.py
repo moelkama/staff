@@ -8,12 +8,11 @@ MEDIA_URL = '/media/'
 
 def create_article(request):
     if request.method == 'POST':
-        ## check if the article already exists
         article_name = request.POST.get('name')
         if Article.objects.filter(name=article_name).exists():
             return JsonResponse({'error': 'Article name already exists'}, status=400)
-        image = request.FILES.get("image")
 
+        image = request.FILES.get("image")
         if image:
             _, extension = os.path.splitext(image.name)
             valid_extensions = ['.jpg', '.jpeg', '.png']
@@ -24,9 +23,6 @@ def create_article(request):
             print(f"File path: {file_path}")
         else:
             return JsonResponse({"error": "Image is required"}, status=400)
-        # file_path = 'https://d2v5dzhdg4zhx3.cloudfront.net/web-assets/images/storypages/primary/ProductShowcasesampleimages/JPEG/Product+Showcase-1.jpg'
-        # print(f"body: {request.body}")
-        # print(f"File path: {file_path}\r\n Article name: {request.POST.get('name')} \r\n Price: {request.POST.get('price')} \r\n Type: {request.POST.get('type')} \r\n Category: {request.POST.get('category')} \r\n Height: {request.POST.get('height')} \r\n Width: {request.POST.get('width')} \r\n How many available: {request.POST.get('how_many_available')}")
         article = Article.objects.create(
             name=article_name,
             price=request.POST.get('price'),
@@ -37,19 +33,7 @@ def create_article(request):
             width=request.POST.get('width'),
             how_many_available=request.POST.get('how_many_available'),
             )
-        return JsonResponse({
-            'name': article.name,
-            'id': article.id,
-            'price': article.price,
-            'src': article.src,
-            'created_at': article.created_at,
-            'type': article.type,
-            'category': article.category,
-            'height': article.height,
-            'width': article.width,
-            'how_many_available': article.how_many_available,
-            'how_many_times_ordered': article.how_many_times_ordered,
-            }, status=201)
+        return JsonResponse({'id':article.id}, status=201)
 
     if request.method == 'GET':
         return render(request, 'app/dashboard.html')

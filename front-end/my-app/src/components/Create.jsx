@@ -48,12 +48,12 @@ export default function Create() {
     const [articles, set_articles] = useState([]);
     const [loading, set_loading] = useState(true);
     const [order_items, set_order_items] = useState([
-        {  
-            'count': 29,
-            'price': 39,
-            'name': 'Pizza',
-            'src': 'https://d2v5dzhdg4zhx3.cloudfront.net/web-assets/images/storypages/primary/ProductShowcasesampleimages/JPEG/Product+Showcase-1.jpg'
-        },
+        // {  
+        //     'count': 29,
+        //     'price': 39,
+        //     'name': 'Pizza',
+        //     'src': 'https://d2v5dzhdg4zhx3.cloudfront.net/web-assets/images/storypages/primary/ProductShowcasesampleimages/JPEG/Product+Showcase-1.jpg'
+        // },
         // {
         //     'count': 10,
         //     'price': 13,

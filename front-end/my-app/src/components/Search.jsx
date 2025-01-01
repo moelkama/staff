@@ -7,7 +7,7 @@ function Table( {orders} ) {
     if (orders.length === 0)
         return <div className="text-2xl font-black text-center text-red-500">No Orders Found</div>
     return (
-        <table className="table-auto border-collapse border border-gray-200">
+        <table className="table-auto mx-auto border-collapse border border-gray-200">
             <thead className="bg-gray-200">
                 <tr>
                     <th className="px-6 py-3 text-sm font-medium text-black uppercase text-center hover:bg-blue-200">ID</th>
@@ -17,7 +17,7 @@ function Table( {orders} ) {
                 </tr>
             </thead>
 
-            <tbody className="bg-white">
+            <tbody>
                 {orders.map((order, index) => 
                 {
                     const date = new Date(order.date);
@@ -41,7 +41,7 @@ function Table( {orders} ) {
                                 <a className="text-center text-xl transition duration-700 ease-in-out font-black inline-block px-6 py-2 bg-blue-400 rounded-md border hover:border-slate-800 hover:bg-transparent" href="/">
                                     <FontAwesomeIcon icon={faPrint} />
                                 </a>
-                                <a href="/api/generate_pdf/{order.id}" className="text-center text-xl transition duration-700 ease-in-out font-black inline-block px-6 py-2 bg-green-400 hover:bg-blue-600 rounded-md border hover:border-slate-800 hover:bg-transparent" target='_blank'>
+                                <a href={`/generate_pdf/${order.id}`} className="text-center text-xl transition duration-700 ease-in-out font-black inline-block px-6 py-2 bg-green-400 hover:bg-blue-600 rounded-md border hover:border-slate-800 hover:bg-transparent" target='_blank'>
                                     <FontAwesomeIcon icon={faEye} />
                                 </a>
                             </td>
@@ -98,7 +98,7 @@ export default function Search() {
     if (loading) return <h1>Loading...</h1>;
     // if (!search_results) return <h1>Error</h1>;
     return (
-        <>
+        <div className="flex flex-col gap-8 items-center">
             <div id="search-container" className="h-10 w-[660px] flex flex-col gap-8">
                 <div className="flex items-center justify-evenly">
                     <input onChange={handleInputChange} className="font-bold h-10 w-4/5 border px-4 border-gray-300 rounded-xl" type="text" placeholder="Search Order"></input>
@@ -113,6 +113,6 @@ export default function Search() {
                 </select>
             </div>
             <Table orders={orders} />
-        </>
+        </div>
     );
 }

@@ -12,7 +12,8 @@ def get_articles(request):
                 {
                     'name': article.name,
                     'price': article.price,
-                    'src': article.src
+                    'src': article.src,
+                    'id': article.id,
                 }
                 for article in articles
             ]
