@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { PieChart, Pie, Sector } from 'recharts';
-import { Link, Routes, Route } from "react-router-dom";
+// import { Link, Routes, Route } from "react-router-dom";
 
 
 const renderActiveShape = (props) => {
@@ -16,20 +16,22 @@ const renderActiveShape = (props) => {
     const ex = mx + (cos >= 0 ? 1 : -1) * 22;
     const ey = my;
     const textAnchor = cos >= 0 ? 'start' : 'end';
+    const height = 600;
+    const width = 600;
 
     return (
-        <g className="overflow-hidden">
+        <g >
     <defs>
         <clipPath id="circle-clip">
-            <circle cx={cx} cy={cy} r={50} />
+            <circle cx={cx} cy={cy} r={100} />
         </clipPath>
     </defs>
     <image 
-        x={cx - 50} // width / 2 
-        y={cy - 50} // height / 2 
+        x={cx - width / 2} // width / 2 
+        y={cy - height / 2} // height / 2 
         href={payload.src} 
-        width="100" 
-        height="100" 
+        width={width} 
+        height={height} 
         clipPath="url(#circle-clip)" 
     />
     <Sector
@@ -61,7 +63,7 @@ const renderActiveShape = (props) => {
     );
 };
 
-function Articles_statistics() {
+function ArticlesStatistics() {
     const [data, setData] = useState([]);
     const [state, setState] = useState({activeIndex: 0});
 
@@ -78,17 +80,17 @@ function Articles_statistics() {
         setState({activeIndex: index,});
     };
     return (
-        <div className='h-96 w-1/2'>
+        <div className='h-[800px] w-[800px]'>
             <ResponsiveContainer width="100%" height="100%">
-                <PieChart width={400} height={400}>
+                <PieChart width={800} height={800}>
                 <Pie
                     activeIndex={state.activeIndex}
                     activeShape={renderActiveShape}
                     data={data}
                     cx="50%"
                     cy="50%"
-                    innerRadius={60}
-                    outerRadius={80}
+                    innerRadius={150}
+                    outerRadius={160}
                     fill="#8884d8"
                     dataKey="value"
                     onMouseEnter={onPieEnter}
@@ -99,7 +101,7 @@ function Articles_statistics() {
     );
 }
 
-function Orders_Statistics()
+function OrdersStatistics()
 {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -108,6 +110,15 @@ function Orders_Statistics()
     const [years, setYears] = useState(['2025', '2024']);
     const [months, setMonths] = useState(['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']);
 
+    const fetchYears = () => {
+        fetch('/api/statistics/Years')
+            .then(res => res.json())
+            .then(data => {
+                // setYears(data.y);
+                console.log('years:::::::::::::', data);
+            })
+            .catch((err) => console.log('errrrrrrrrrooooooooooooooor'));
+    }
     const fetchData = () => {
         fetch(`/api/statistics/Orders/${year}/${month}`)
             .then(res => res.json())
@@ -120,6 +131,7 @@ function Orders_Statistics()
 
     useEffect(() => {
         fetchData();
+        fetchYears();
     }, [month, year]);
 
     const changeYear = (e) => {
@@ -133,7 +145,7 @@ function Orders_Statistics()
 
     return (
         <div className="h-80 w-[960px] relative">
-            <div className='z-10 absolute top-4 right-10 flex gap-1'>
+            <div className='z-10 absolute right-10 flex gap-1'>
                 <select onChange={changeYear} className=" h-10 font-black px-4 rounded-xl border border-gray-300">
                     {years.map((year, index) => <option key={index} value={year} >{year}</option>)}
                 </select>
@@ -158,39 +170,34 @@ function Orders_Statistics()
 
 export default function Statistics() {
     return (
-            <div className="w-full flex flex-col items-center gap-10">
-                <section >
-                    <div className="container px-5 py-10 mx-auto">
-                        <div className="pt-3">
-                            <h2 className="w-full leading-border-text -mb-2 pr-2 pl-2">
-                                <span className="bg-white px-2 text-xl font-bold">Orders Per Month</span>
-                            </h2>
-                            <div className="flex flex-wrap px-5 pb-5 pt-4 border-b border-t border-r border-l border-gray-600 rounded-md">
-                                <Orders_Statistics />
-                            </div>
+            <div className="flex flex-col items-center gap-10">
+                <div className="container px-5 py-10 mx-auto">
+                    <div className="pt-3">
+                        <h2 className="w-full leading-border-text -mb-2 pr-2 pl-2">
+                            <span className="bg-white px-2 text-xl font-bold">Orders Per Month</span>
+                        </h2>
+                        <div className="flex flex-wrap px-5 pb-5 pt-4 border-b border-t border-r border-l border-gray-600 rounded-md">
+                            <OrdersStatistics />
                         </div>
                     </div>
-                </section>
-                <section >
-                    <div className="container px-5 py-10 mx-auto">
-                        <div className="pt-3">
-                            <h2 className="w-full leading-border-text -mb-2 pr-2 pl-2">
-                                <span className="bg-white px-2 text-xl font-bold">Articles</span>
-                            </h2>
-                            {/* <div className="flex flex-wrap px-5 pb-5 pt-4 border-b border-t border-r border-l border-gray-600 rounded-md"> */}
-                                <Articles_statistics />
-                             {/* </div> */}
-                        </div> 
+                </div>
+                <div >
+                    <h2 className="w-full leading-border-text -mb-2 pr-2 pl-2">
+                        <span className="bg-white px-2 text-xl font-bold">Most Ordered Articles</span>
+                    </h2>
+                    <div className="px-2 flex border-b border-t border-r border-l border-gray-600 rounded-md">
+                        <ArticlesStatistics />
                     </div>
-                </section>
+                </div>
             </div>
-            {/* <div className="flex gap-4 px-8">
-                <Link to="Orders" className="text-xl text-black flex justify-center items-center h-10 w-24 bg-green-400 rounded-md transition duration-700 ease-in-out hover:bg-transparent border hover:border-slate-800">Orders</Link>
-                <Link to="Articles" className="text-xl text-black flex justify-center items-center h-10 w-24 bg-green-400 rounded-md transition duration-700 ease-in-out hover:bg-transparent border hover:border-slate-800">Articles</Link>
-            </div>
-            <Routes>
-                <Route path="Orders" element={<Orders_Statistics />} />
-                <Route path="Articles" element={<Articles_statistics />} />
-            </Routes> */}
     )
 }
+
+// {/* <div className="flex gap-4 px-8">
+//                 <Link to="Orders" className="text-xl text-black flex justify-center items-center h-10 w-24 bg-green-400 rounded-md transition duration-700 ease-in-out hover:bg-transparent border hover:border-slate-800">Orders</Link>
+//                 <Link to="Articles" className="text-xl text-black flex justify-center items-center h-10 w-24 bg-green-400 rounded-md transition duration-700 ease-in-out hover:bg-transparent border hover:border-slate-800">Articles</Link>
+//             </div>
+//             <Routes>
+//                 <Route path="Orders" element={<OrdersStatistics />} />
+//                 <Route path="Articles" element={<ArticlesStatistics />} />
+//             </Routes> */}

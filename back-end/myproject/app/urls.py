@@ -31,6 +31,7 @@ urlpatterns = [
     # path('delete_order/<str:order_id>/', delete_order.DeleteOrder, name='delete_order'), #api
 
     #statics
+    path('statistics/Years', statistics.How_many_year, name='statistics'),
     path('statistics/Orders/<int:year>/<int:month>', statistics.Orders_statistics, name='statistics'),
     path('statistics/Articles/<str:period_time>', statistics.Articles_statistics, name='statistics'),
 ]

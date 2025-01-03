@@ -5,8 +5,11 @@ from django.db.models.functions import TruncDate
 from datetime import date, timedelta
 from app.models import Order
 from app.models import Article
+from django.db.models.functions import ExtractYear, ExtractMonth
 
 def Orders_statistics(request, year, month):
+    if request.method != 'GET':
+        return JsonResponse({'status': 'error', 'message': 'method not allowed'}, status=405)
     orders_by_day = (
         Order.objects.filter(date__year=year, date__month=month)
         .annotate(day_only=TruncDate('date'))  # Truncate datetime to date
@@ -35,3 +38,23 @@ def Articles_statistics(request, period_time):
     result = [{'name': article.name, 'value': article.how_many_times_ordered, 'src':article.src } for article in articles]
     print('result::::::::::::::::::::', result)
     return JsonResponse({'data': result}, status=200)
+
+def How_many_year(request):
+    orders = Order.objects.annotate(
+        year=ExtractYear('date'),
+        month=ExtractMonth('date')
+    ).values('year', 'month').distinct()
+
+    result = {}
+    for order in orders:
+        year = order['year']
+        month = order['month']
+        if year not in result:
+            result[year] = []
+        if month not in result[year]:
+            result[year].append(month)
+
+    # Convert the result to the desired format
+    formatted_result = [{'year': year, 'months': sorted(months)} for year, months in result.items()]
+
+    return JsonResponse(formatted_result, safe=False)
