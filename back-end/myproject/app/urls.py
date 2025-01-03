@@ -2,6 +2,7 @@ from django.urls import path
 from . import views,find_order , dynamic_form
 from app.article_views import create_article, get_articles, delete_article
 from app.order_views import create_order, search_order, update_order, delete_order
+from app.statistics_views import statistics
 from . import serve_file, generate_pdf
 
 urlpatterns = [
@@ -28,4 +29,8 @@ urlpatterns = [
     path('create_order', create_order.create_order, name='dynamic_form'), #api
     path('delete_order/<str:order_id>', delete_order.DeleteOrder, name='delete_order'), #api
     # path('delete_order/<str:order_id>/', delete_order.DeleteOrder, name='delete_order'), #api
+
+    #statics
+    path('statistics/Orders/<int:year>/<int:month>', statistics.Orders_statistics, name='statistics'),
+    path('statistics/Articles/<str:period_time>', statistics.Articles_statistics, name='statistics'),
 ]

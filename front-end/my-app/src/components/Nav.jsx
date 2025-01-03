@@ -15,7 +15,7 @@ export default function Nav() {
                         <Link to="/create" className="text-xl text-black flex justify-center items-center h-10 w-24 bg-green-400 rounded-md transition duration-700 ease-in-out hover:bg-transparent border hover:border-slate-800">
                             <FontAwesomeIcon icon={faCashRegister} />
                         </Link>
-                        <Link to="/dashboard/Articles" className="text-xl text-black flex justify-center items-center h-10 w-24 bg-green-400 rounded-md transition duration-700 ease-in-out hover:bg-transparent border hover:border-slate-800">
+                        <Link to="/dashboard/Statistics/Orders" className="text-xl text-black flex justify-center items-center h-10 w-24 bg-green-400 rounded-md transition duration-700 ease-in-out hover:bg-transparent border hover:border-slate-800">
                             <FontAwesomeIcon icon={faChartPie} />
                         </Link>
                     </ul>

@@ -7,16 +7,16 @@ import Dashboard from "./components/Dashboard";
 
 function App() {
 
-  useEffect(() => {
-    fetch("/csrf/")
-    .then((response) => response.json())
-    .then((data) => {
-      console.log('django respons::::::::::::', data);
-    })
-    .catch((error) => {
-      console.log('errorrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
-    });
-  }, []);
+  // useEffect(() => {
+  //   fetch("/csrf/")
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     console.log('django respons::::::::::::', data);
+  //   })
+  //   .catch((error) => {
+  //     console.log('errorrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
+  //   });
+  // }, []);
 
   return (
     <Router>
