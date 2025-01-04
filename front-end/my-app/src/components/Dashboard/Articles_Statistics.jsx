@@ -65,21 +65,29 @@ const renderActiveShape = (props) => {
 export default function ArticlesStatistics() {
     const [data, setData] = useState([]);
     const [state, setState] = useState({activeIndex: 0});
+    const [option, setOption] = useState('ALL');
+    const options = ['ALL', 'TODAY', 'THIS WEEK', 'THIS MONTH', 'THIS YEAR'];
+    const changeOption = (e) => {
+        setOption(e.target.value);
+    }
 
     useEffect(() => {
-        fetch('/api/statistics/Articles/fiwe')
+        fetch(`/api/statistics/Articles/${option}`)
             .then(res => res.json())
             .then(data => {
-                console.log('data:::::::::::::', data);
+                console.log('dataaaaaaaaaaaa:::::::::::::', data);
                 setData(data.data);
             })
             .catch((err) => console.log('errrrrrrrrrooooooooooooooor'));
-    }, []);
+    }, [option]);
     const onPieEnter = (_, index) => {
         setState({activeIndex: index,});
     };
     return (
-        <div className='h-[520px] w-[660px]'>
+        <div className='h-[520px] w-[660px] relative'>
+            <select onChange={changeOption} className="z-10 absolute top-4 right-4 h-8 font-black px-4 rounded-xl border border-gray-300">
+                {options.map((year, index) => <option key={index} value={year}>{year}</option>)}
+            </select>
             <ResponsiveContainer width="100%" height="100%">
                 <PieChart width={800} height={800}>
                 <Pie

@@ -4,7 +4,6 @@ from django.shortcuts import render
 import json
 
 def create_order(request):
-    print("------------------hello from create_order------------------")
     if request.method == 'POST':
         items = json.loads(request.body)
         order = Order.objects.create()
