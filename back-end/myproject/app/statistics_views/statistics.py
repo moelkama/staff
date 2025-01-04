@@ -6,6 +6,7 @@ from datetime import date, timedelta
 from app.models import Order
 from app.models import Article
 from django.db.models.functions import ExtractYear, ExtractMonth
+from django.db.models.functions import TruncMonth
 
 def Orders_statistics(request, year, month):
     if request.method != 'GET':
@@ -38,6 +39,23 @@ def Articles_statistics(request, period_time):
     result = [{'name': article.name, 'value': article.how_many_times_ordered, 'src':article.src } for article in articles]
     print('result::::::::::::::::::::', result)
     return JsonResponse({'data': result}, status=200)
+
+def Orders_per_month(request, year):
+    orders_by_month = (
+        Order.objects.filter(date__year=year)
+        .annotate(month=TruncMonth('date'))
+        .values('month')
+        .annotate(count=Count('id'))
+        .order_by('month')
+    )
+
+    result = [{'month': i, 'orders': 0} for i in range(1, 13)]
+
+    for entry in orders_by_month:
+        month = entry['month'].month
+        result[month - 1]['orders'] = entry['count']
+
+    return JsonResponse(result, safe=False)
 
 def How_many_year(request):
     orders = Order.objects.annotate(

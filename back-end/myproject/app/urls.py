@@ -32,6 +32,7 @@ urlpatterns = [
 
     #statics
     path('statistics/Years', statistics.How_many_year, name='statistics'),
+    path('statistics/Orders_per_month/<int:year>', statistics.Orders_per_month, name='Orders_per_month'),
     path('statistics/Orders/<int:year>/<int:month>', statistics.Orders_statistics, name='statistics'),
     path('statistics/Articles/<str:period_time>', statistics.Articles_statistics, name='statistics'),
 ]

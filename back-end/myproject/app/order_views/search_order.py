@@ -6,7 +6,7 @@ def search_order(request, order_id):
     if request.method != 'GET':
         return JsonResponse({'error': 'Invalid HTTP method'}, status=405)
     try:
-        print('order_id:',order_id)
+        order_id = order_id.upper()
         order = Order.objects.get(id=order_id)
         items = [{'name': item.name, 'count': item.count, 'price': item.price} for item in order.items.all()]
 
