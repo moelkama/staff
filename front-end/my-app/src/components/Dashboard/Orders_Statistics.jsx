@@ -45,25 +45,34 @@ export default function OrdersStatistics()
     if (loading) return <h1>Loading...</h1>;
 
     return (
-        <div className="h-80 w-[960px] relative">
-            <div className='z-10 absolute right-10 flex gap-1'>
-                <select onChange={changeYear} className=" h-10 font-black px-4 rounded-xl border border-gray-300">
-                    {years.map((year, index) => <option key={index} value={year} >{year}</option>)}
-                </select>
-                <select onChange={changeMonth} className="h-10 font-black px-4 rounded-xl border border-gray-300">
-                    {months.map((month, index) => <option key={index} value={month}>{month}</option>)}
-                </select>
+        <div className="px-5 py-10 mx-auto">
+            <div className="pt-3">
+                <h2 className="w-full leading-border-text -mb-2 pr-2 pl-2">
+                    <span className="bg-transparent px-2 text-xl font-bold">Monthly Orders</span>
+                </h2>
+                <div className="shadow-2xl flex flex-wrap px-5 pb-5 pt-4 border-b border-t border-r border-l border-gray- bg-slate-100 rounded-md">
+                    <div className="h-80 w-[960px] relative">
+                        <div className='z-10 absolute right-10 flex gap-1'>
+                            <select onChange={changeYear} className=" h-10 font-black px-4 rounded-xl border border-gray-300">
+                                {years.map((year, index) => <option key={index} value={year} >{year}</option>)}
+                            </select>
+                            <select onChange={changeMonth} className="h-10 font-black px-4 rounded-xl border border-gray-300">
+                                {months.map((month, index) => <option key={index} value={month}>{month}</option>)}
+                            </select>
+                        </div>
+                        <ResponsiveContainer width="100%" height="100%" className="rounded-3xl">
+                            <LineChart width={500} height={300} data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5,}}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="date" />
+                                <YAxis />
+                                <Tooltip />
+                                <Legend />
+                                <Line type="monotone" dataKey="orders" stroke="#8884d8" activeDot={{ r: 6 }} />
+                            </LineChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
             </div>
-            <ResponsiveContainer width="100%" height="100%" className="rounded-3xl">
-                <LineChart width={500} height={300} data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5,}}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="orders" stroke="#8884d8" activeDot={{ r: 6 }} />
-                </LineChart>
-            </ResponsiveContainer>
         </div>
     );
 }

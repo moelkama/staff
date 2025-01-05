@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { PieChart, Pie, Sector, ResponsiveContainer } from 'recharts';
+import Loding from '../loading';
 
 const renderActiveShape = (props) => {
     const RADIAN = Math.PI / 180;
@@ -64,6 +65,7 @@ const renderActiveShape = (props) => {
 
 export default function ArticlesStatistics() {
     const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [state, setState] = useState({activeIndex: 0});
     const [option, setOption] = useState('ALL');
     const options = ['ALL', 'TODAY', 'THIS WEEK', 'THIS MONTH', 'THIS YEAR'];
@@ -72,38 +74,58 @@ export default function ArticlesStatistics() {
     }
 
     useEffect(() => {
+        setLoading(true);
         fetch(`/api/statistics/Articles/${option}`)
             .then(res => res.json())
             .then(data => {
-                console.log('dataaaaaaaaaaaa:::::::::::::', data);
+                console.log('dataaaa33333333333:::::::::::::', data);
                 setData(data.data);
+                setLoading(false);
             })
             .catch((err) => console.log('errrrrrrrrrooooooooooooooor'));
     }, [option]);
+
     const onPieEnter = (_, index) => {
         setState({activeIndex: index,});
     };
+
     return (
-        <div className='h-[520px] w-[660px] relative'>
-            <select onChange={changeOption} className="z-10 absolute top-4 right-4 h-8 font-black px-4 rounded-xl border border-gray-300">
-                {options.map((year, index) => <option key={index} value={year}>{year}</option>)}
-            </select>
-            <ResponsiveContainer width="100%" height="100%">
-                <PieChart width={800} height={800}>
-                <Pie
-                    activeIndex={state.activeIndex}
-                    activeShape={renderActiveShape}
-                    data={data}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={150}
-                    outerRadius={170}
-                    fill="#8884d8"
-                    dataKey="value"
-                    onMouseEnter={onPieEnter}
-                />
-                </PieChart>
-            </ResponsiveContainer>
+        <div >
+            <h2 className="w-full leading-border-text -mb-2 pr-2 pl-2">
+                <span className="bg-transparent px-2 text-xl font-bold">Top Ordered Articles</span>
+            </h2>
+            <div className="shadow-2xl px-2 flex border-b border-t border-r border-l border-gray- rounded-md">
+                <div className='h-[520px] w-[660px] flex justify-center items-center relative'>
+                    <select onChange={changeOption} className="z-10 absolute top-4 right-4 h-8 font-black px-4 rounded-xl border border-gray-300">
+                        {options.map((year, index) => <option key={index} value={year}>{year}</option>)}
+                    </select>
+                    {loading ? 
+                        <div className='h-[520px] w-[660px] flex justify-center items-center relative'>
+                            <Loding />
+                        </div>
+                        :
+                            data.length === 0 ?
+                                <h1 className='text-2xl font-black text-center text-red-500'>No Articles Have Been Ordered Yet</h1>
+                                : 
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <PieChart width={800} height={800}>
+                                    <Pie
+                                        activeIndex={state.activeIndex}
+                                        activeShape={renderActiveShape}
+                                        data={data}
+                                        cx="50%"
+                                        cy="50%"
+                                        innerRadius={150}
+                                        outerRadius={170}
+                                        fill="#8884d8"
+                                        dataKey="value"
+                                        onMouseEnter={onPieEnter}
+                                    />
+                                    </PieChart>
+                                </ResponsiveContainer>
+                    }
+                </div>
+            </div>
         </div>
     );
 }
