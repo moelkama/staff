@@ -19,20 +19,26 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <Nav />
-      <Routes>
-        <Route path="/" element={<Search />} />
-        <Route path="/create" element={<Create />} />
-        <Route path="/dashboard/*" element={<Dashboard />} />
-        <Route path="*" element={
-          <div className='flex justify-center items-center h-screen w-screen'>
-            <h1 className='text-6xl text-ellipsis text-black font-black'>FROM REACT</h1>
-            <h1 className='text-6xl text-ellipsis text-red-500 font-black'>404</h1>
-          </div>
-        } />
-      </Routes>
-    </Router>
+    <div className="">
+        <Router >
+            <div className="flex flex-col">
+                <Nav />
+                <div className="flex-1">
+                    <Routes>
+                        <Route path="/" element={<Search />} />
+                        <Route path="/create" element={<Create />} />
+                        <Route path="/dashboard/*" element={<Dashboard />} />
+                        <Route path="*" element={
+                            <div className='flex justify-center items-center h-screen w-screen'>
+                            <h1 className='text-6xl text-ellipsis text-black font-black'>FROM REACT</h1>
+                            <h1 className='text-6xl text-ellipsis text-red-500 font-black'>404</h1>
+                            </div>
+                    } />
+                    </Routes>
+                </div>
+            </div>
+        </Router>
+    </div>
   );
 }
 

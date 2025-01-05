@@ -92,7 +92,9 @@ def Orders_per_month(request, year):
         .order_by('month')
     )
 
-    result = [{'month': i, 'orders': 0} for i in range(1, 13)]
+    months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    # result = [{'month': i, 'orders': 0} for i in range(1, 13)]
+    result = [{'month': month, 'orders': 0} for month in months]
 
     for entry in orders_by_month:
         month = entry['month'].month

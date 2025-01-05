@@ -63,7 +63,7 @@ const renderActiveShape = (props) => {
     );
 };
 
-export default function ArticlesStatistics() {
+export default function ArticlesStatistics({ classname }) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [state, setState] = useState({activeIndex: 0});
@@ -90,10 +90,8 @@ export default function ArticlesStatistics() {
     };
 
     return (
-        <div >
-            <h2 className="w-full leading-border-text -mb-2 pr-2 pl-2">
-                <span className="bg-transparent px-2 text-xl font-bold">Top Ordered Articles</span>
-            </h2>
+        <div className={classname}>
+            <h2 className="absolute top-2 left-8 text-xl font-bold">Top Ordered Articles</h2>
             <div className="shadow-2xl px-2 flex border-b border-t border-r border-l border-gray- rounded-md">
                 <div className='h-[520px] w-[660px] flex justify-center items-center relative'>
                     <select onChange={changeOption} className="z-10 absolute top-4 right-4 h-8 font-black px-4 rounded-xl border border-gray-300">

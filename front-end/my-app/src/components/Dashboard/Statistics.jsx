@@ -4,7 +4,7 @@ import OrdersStatistics from './Orders_Statistics';
 import ArticlesStatistics from './Articles_Statistics';
 import Loading from '../loading';
 
-function MonthlyOrdersPerYear({ className}) {
+function MonthlyOrdersPerYear({ classname }) {
     const [years, setYears] = useState(['2025', '2024']);
     const [year, setYear] = useState('2025');
     const [data, setData] = useState(
@@ -33,31 +33,29 @@ function MonthlyOrdersPerYear({ className}) {
             .catch((err) => console.log('errrrrrrrrrooooooooooooooor'));
     }, [year]);
 
+    if (loading) return <h1>Loading...</h1>;
     return (
-        <div className={className}>
-            <h2 className="w-full leading-border-text -mb-2 pr-2 pl-2">
-                <span className="bg-transparent px-2 text-xl font-bold">Orders Per Year</span>
-            </h2>
-            <div className="shadow-2xl px-2 flex border-b border-t border-r border-l border-gray- rounded-md">
-                <div className='relative'>
+        <div className={classname}>
+            <h2 className="absolute top-2 left-8 text-xl font-bold">Orders Per Year</h2>
+            <div className=" shadow-2xl px-2 flex border-b border-t border-r border-l border-gray- rounded-md">
+                <div className='h-[520px] w-full relative'>
                     <select onChange={changeYear} className="z-10 absolute top-4 right-4 h-8 font-black px-4 rounded-xl border border-gray-300">
                         {years.map((year, index) => <option key={index} value={year}>{year}</option>)}
                     </select>
                     {loading ?
                         <Loading />
                         :
-                        <BarChart
+                        <BarChart 
                             {...{
-                                width: 500,
-                                height: 300,
                                 xAxis: [{ data: data.xAxis_data, scaleType: 'band' }],
                             }}
-                        series={[
-                            {
-                            data: data.yAxis_data,
-                            label: 'Orders',
-                            },
-                        ]}
+                            series={[
+                                {
+                                data: data.yAxis_data,
+                                label: 'Orders',
+                                },
+                            ]}
+                            style={{ width: '100%', height: '100%' }}
                         />
                     }
                 </div>
@@ -68,12 +66,10 @@ function MonthlyOrdersPerYear({ className}) {
 
 export default function Statistics() {
     return (
-            <div className="select-none grid grid-cols-3 gap-10 mx-auto">
-                <OrdersStatistics />
-                <div className='flex gap-20 flex-wrap'>
-                    <MonthlyOrdersPerYear />
-                    <ArticlesStatistics />
-                </div>
-            </div>
+        <div className="select-none grid grid-cols-3 gap-10 p-8 mx-auto">
+            <OrdersStatistics classname="relative w-full col-span-full" />
+            <MonthlyOrdersPerYear classname='relative col-start-1 col-end-3'/>
+            <ArticlesStatistics classname='relative col-start-3 col-end-4' />
+        </div>
     )
 }
