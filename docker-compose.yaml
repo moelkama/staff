@@ -6,8 +6,6 @@ services:
     build:
       context: ./back-end
       dockerfile: Dockerfile
-    # ports:
-    #   - "8000:8000"
     volumes:
       - ./back-end/myproject/:/usr/src/app
       # - ./uploads/:/uploads
@@ -21,8 +19,6 @@ services:
     build:
       context: ./front-end
       dockerfile: Dockerfile
-    # ports:
-    #   - "3000:3000"
     volumes:
       - ./front-end/my-app/:/app
     env_file:
@@ -38,10 +34,6 @@ services:
     container_name: nginx
     volumes:
       - ./nginx/config.conf:/etc/nginx/conf.d/default.conf
-    # volumes:
-      # - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-      # - static_volume:/static
-      # - media_volume:/media
     ports:
       - "80:80"
     networks:
