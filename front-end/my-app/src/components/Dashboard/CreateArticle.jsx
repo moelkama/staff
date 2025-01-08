@@ -12,6 +12,7 @@ export default function CreateArticle() {
     const [width, setWidth] = useState(0.6);
     const [how_many_available, setHowManyAvailable] = useState(50);
     const [image, setImage] = useState(null);
+    const [imagePath, setImagePath] = useState(null);
     // const [imagePreview, setImagePreview] = useState(null);
 
     const change_name = (e) => {
@@ -44,6 +45,7 @@ export default function CreateArticle() {
 
     const change_image = (e) => {
         setImage(e.target.files[0]);
+        setImagePath(URL.createObjectURL(e.target.files[0]));
     }
 
     const Submit = (e) => {
@@ -87,29 +89,50 @@ export default function CreateArticle() {
             <form className="flex flex-col gap-4" enctype="multipart/form-data">
                 <div className="flex gap-4 justify-center items-center">
                     <div className="flex flex-col gap-4">
-                        <input required onChange={change_name} value={name} type="text" className="h-10 rounded-xl border border-gray-300" name="article_name" placeholder="Name" />
-                        <input required onChange={change_price} value={price} type="number" className="h-10 rounded-xl border border-gray-300" name="price" placeholder="Price" />
-                        <select onChange={change_type} value={type} className="h-10 rounded-xl border border-gray-300">
-                            <option value="TYPE 1">TYPE 1</option>
-                            <option value="TYPE 2">TYPE 2</option>
-                            <option value="TYPE 3">TYPE 3</option>
-                            <option value="TYPE 4">TYPE 4</option>
-                        </select>
-                        <select onChange={change_category} value={category} className="h-10 rounded-xl border border-gray-300">
-                            <option value="CATEGORY 1">CATEGORY 1</option>
-                            <option value="CATEGORY 2">CATEGORY 2</option>
-                            <option value="CATEGORY 3">CATEGORY 3</option>
-                            <option value="CATEGORY 4">CATEGORY 4</option>
-                        </select>
-                        <div className="flex gap-4">
-                            <input required onChange={change_height} value={height} type="number" className="w-28 h-10 rounded-xl border border-gray-300" name="height" placeholder="height" />
-                            <input required onChange={change_width} value={width} type="number" className="w-28 h-10 rounded-xl border border-gray-300" name="width" placeholder="width" />
+                        <div className="flex gap-4 items-center justify-between">
+                            <label className="text-lg font-bold">Name</label>
+                            <input required onChange={change_name} value={name} type="text" className="px-4 h-10 rounded-xl border border-gray-300" name="article_name" placeholder="Name" />
                         </div>
-                        <input required onChange={change_how_many_available} value={how_many_available} type="number" className="h-10 rounded-xl border border-gray-300" name="how_many_available" placeholder="Quantity" />
+                        <div className="flex gap-4 items-center justify-between">
+                            <label className="text-lg font-bold">Price</label>
+                            <input required onChange={change_price} value={price} type="number" className="px-4 h-10 rounded-xl border border-gray-300" name="price" placeholder="Price" />
+                        </div>
+                        <div className="flex gap-4 items-center justify-between">
+                            <label className="text-lg font-bold">Type</label>
+                            <select onChange={change_type} value={type} className="h-10 w-1/2 rounded-xl border border-gray-300">
+                                <option value="TYPE 1">TYPE 1</option>
+                                <option value="TYPE 2">TYPE 2</option>
+                                <option value="TYPE 3">TYPE 3</option>
+                                <option value="TYPE 4">TYPE 4</option>
+                            </select>
+                        </div>
+                        <div className="flex gap-4 items-center justify-between">
+                            <label className="text-lg font-bold">Category</label>
+                            <select onChange={change_category} value={category} className="h-10 w-1/2 rounded-xl border border-gray-300">
+                                <option value="CATEGORY 1">CATEGORY 1</option>
+                                <option value="CATEGORY 2">CATEGORY 2</option>
+                                <option value="CATEGORY 3">CATEGORY 3</option>
+                                <option value="CATEGORY 4">CATEGORY 4</option>
+                            </select>
+                        </div>
+                        <div className="flex items-center justify-between gap-4">
+                            <div className="flex gap-2 items-center">
+                                <label className="text-lg font-bold">height</label>
+                                <input required onChange={change_height} value={height} type="number" className="px-3 w-12 h-10 rounded-xl border border-gray-300" name="height" placeholder="height" />
+                            </div>
+                            <div className="flex gap-1 items-center">
+                                <label className="text-lg font-bold">width</label>
+                                <input required onChange={change_width} value={width} type="number" className="px-3 w-12 h-10 rounded-xl border border-gray-300" name="width" placeholder="width" />
+                            </div>
+                        </div>
+                        <div className="flex gap-4 items-center justify-between">
+                            <label className="text-lg font-bold">Stock</label>
+                            <input required onChange={change_how_many_available} value={how_many_available} type="number" className="h-10 rounded-xl border border-gray-300" name="how_many_available" placeholder="Quantity" />
+                        </div>
                     </div>
-                    <div>
+                    <div className="flex flex-col justify-between items-center gap-4">
                         <input onChange={change_image} accept="image/*" type="file" name="image" className="block w-28 h-12 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none hover:bg-gray-100"/>
-                        <img className="hidden h-80 object-cover rounded-xl" src="https://d2v5dzhdg4zhx3.cloudfront.net/web-assets/images/storypages/primary/ProductShowcasesampleimages/JPEG/Product+Showcase-1.jpg" alt="hhh 1"/>
+                        <img src={imagePath} className="h-80 object-cover rounded-xl" alt="hhh 1"/>
                     </div>
                 </div>
                 <button onClick={Submit} className="bg-green-500 border hover:border-gray-400 hover:bg-transparent text-xl hover:text-black text-white font-bold py-2 px-4 rounded">
