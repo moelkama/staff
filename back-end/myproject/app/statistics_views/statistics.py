@@ -104,20 +104,9 @@ def Orders_per_month(request, year):
 
 def How_many_year(request):
     orders = Order.objects.annotate(
-        year=ExtractYear('date'),
-        month=ExtractMonth('date')
-    ).values('year', 'month').distinct()
+        year=ExtractYear('date')
+    ).values('year').distinct()
 
-    result = {}
-    for order in orders:
-        year = order['year']
-        month = order['month']
-        if year not in result:
-            result[year] = []
-        if month not in result[year]:
-            result[year].append(month)
+    formatted_result = [order['year'] for order in orders]
 
-    # Convert the result to the desired format
-    formatted_result = [{'year': year, 'months': sorted(months)} for year, months in result.items()]
-
-    return JsonResponse(formatted_result, safe=False)
+    return JsonResponse({'years': formatted_result}, safe=False)

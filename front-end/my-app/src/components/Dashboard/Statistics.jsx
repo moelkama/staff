@@ -5,18 +5,26 @@ import ArticlesStatistics from './Articles_Statistics';
 import Loading from '../loading';
 
 function MonthlyOrdersPerYear({ classname }) {
-    const [years, setYears] = useState(['2025', '2024']);
-    const [year, setYear] = useState('2025');
-    const [data, setData] = useState(
-        // {
-        //     xAxis_data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-        //     yAxis_data: [2400, 1398, 9800, 3908, 4800, 3490, 4300, 2100, 2300, 2100, 2300, 2100],
-        //   }
-    );
+    const [years, setYears] = useState([]);
+    const [year, setYear] = useState();
+    const [data, setData] = useState();
     const [loading, setLoading] = useState(true);
+
     const changeYear = (e) => {
         setYear(e.target.value);
     }
+
+    useEffect(() => {
+        fetch('/api/statistics/Years')
+        .then(res => res.json())
+        .then(data => {
+            setYears(data.years);
+        })
+        .catch((err) => console.log('errrrrrrrrrooooooooooooooor'));
+        const date = new Date();
+        const year = date.getFullYear();
+        setYear(year.toString());
+    }, []);
 
     useEffect(() => {
         setLoading(true);
@@ -24,8 +32,8 @@ function MonthlyOrdersPerYear({ classname }) {
             .then(res => res.json())
             .then(data => {
                 setData(data.reduce((acc, { month, orders }) => {
-                    acc.xAxis_data.push(String(month));  // Add month as string for x-axis
-                    acc.yAxis_data.push(orders);         // Add orders for y-axis
+                    acc.xAxis_data.push(String(month));
+                    acc.yAxis_data.push(orders);
                     return acc;
                 }, { xAxis_data: [], yAxis_data: [] }));
                 setLoading(false);
@@ -33,7 +41,6 @@ function MonthlyOrdersPerYear({ classname }) {
             .catch((err) => console.log('errrrrrrrrrooooooooooooooor'));
     }, [year]);
 
-    if (loading) return <h1>Loading...</h1>;
     return (
         <div className={classname}>
             <h2 className="absolute top-2 left-8 text-xl font-bold">Orders Per Year</h2>

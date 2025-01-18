@@ -2,6 +2,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faEye, faPrint } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useState } from "react";
+import Loading from "./loading";
 
 function Table( {orders} ) {
     if (orders.length === 0)
@@ -32,7 +33,7 @@ function Table( {orders} ) {
 
                     const date_string = `${day}/${month}/${year} ${hours}:${minutes}`; //:${seconds}
                     return (
-                        <tr key={order.id} className="border-t border-gray-200 bg-gray-100">
+                            <tr key={order.id} className={index % 2 === 0 ? "bg-gray-100" : "bg-gray-200"}>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{ order.id }</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{ date_string }</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{ order.total }</td>
@@ -59,7 +60,7 @@ export default function Search() {
     const [loading, set_loading] = useState(true);
     const [period_time, set_period_time] = useState("LAST_WEEK");
     const [period_times, set_period_times] = useState([]);
-    const [search_id, set_search_id] = useState("D4XEPC");
+    const [search_id, set_search_id] = useState('');
 
     useEffect(() => {
         const url = `/api/find_order/${period_time}`;
@@ -75,7 +76,6 @@ export default function Search() {
 
     const handleInputChange = (event) => {
         const search = event.target.value;
-        console.log("id::::::::::::::::", search);
         set_search_id(search);
     }
 
@@ -95,10 +95,8 @@ export default function Search() {
             console.error('Errorrrrrrrrrrrrrrrrrr');
         });
     }
-    if (loading) return <h1>Loading...</h1>;
-    // if (!search_results) return <h1>Error</h1>;
     return (
-        <div className="flex flex-col gap-8 items-center">
+        <div className="flex flex-col gap-8 items-center mb-20">
             <div id="search-container" className="h-10 w-[660px] flex flex-col gap-8">
                 <div className="flex items-center justify-evenly">
                     <input onChange={handleInputChange} className="font-bold h-10 w-4/5 border px-4 border-gray-300 rounded-xl" type="text" placeholder="Search Order"></input>
@@ -112,7 +110,11 @@ export default function Search() {
                     {period_times.map( (pt) => <option key={pt} value={pt}>{pt}</option>)}
                 </select>
             </div>
-            <Table orders={orders} />
+            {loading ?
+                <Loading />
+                :
+                <Table orders={orders} />
+            }
         </div>
     );
 }

@@ -10,6 +10,7 @@ def create_article(request):
     if request.method == 'POST':
         article_name = request.POST.get('name')
         if Article.objects.filter(name=article_name).exists():
+            print(f"Article name already exists: {article_name}\r\n")
             return JsonResponse({'error': 'Article name already exists'}, status=400)
 
         image = request.FILES.get("image")
@@ -22,7 +23,9 @@ def create_article(request):
             file_path = default_storage.save(f"{UPLOAD_PATH}/{UPLOADED_NAME}", image)
             print(f"File path: {file_path}")
         else:
+            print("Image is required\r\n")
             return JsonResponse({"error": "Image is required"}, status=400)
+        # file_path = 'articles_pictures/1.jpg'
         article = Article.objects.create(
             name=article_name,
             price=request.POST.get('price'),

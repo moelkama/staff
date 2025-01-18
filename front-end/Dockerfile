@@ -13,4 +13,5 @@ WORKDIR /app
 
 # Start the React development server
 CMD ["npm", "start"]
+# CMD ["npm", "run", "build"]
 # CMD ["tail", "-f"]
