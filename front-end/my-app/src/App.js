@@ -2,46 +2,9 @@ import Search from "./components/Search";
 import Nav from "./components/Nav";
 import Create from "./components/Create";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import React, { useEffect, useState, cloneElement } from 'react';
+import React, { useEffect } from 'react';
 import Dashboard from "./components/Dashboard";
-// import { Popover } from './tst';
-
-import {
-  FloatingTree,
-  FloatingNode,
-  useFloatingNodeId,
-  useFloating,
-  FloatingPortal,
-} from '@floating-ui/react';
- 
-function Popover({children, content}) {
-  const [isOpen, setIsOpen] = useState(false);
- 
-  // Subscribe this component to the <FloatingTree> wrapper:
-  const nodeId = useFloatingNodeId();
- 
-  // Pass the subscribed `nodeId` to `useFloating`:
-  const {refs, floatingStyles} = useFloating({
-    nodeId,
-    open: isOpen,
-    onOpenChange: setIsOpen,
-  });
- 
-  // Wrap the rendered floating element in a `<FloatingNode>`,
-  // passing in the subscribed `nodeId`:
-  return (
-    <>
-      {cloneElement(children, {ref: refs.setReference})}
-      <FloatingNode id={nodeId}>
-        {isOpen && (
-          <FloatingPortal>
-            <div ref={refs.setFloating}>{content}</div>
-          </FloatingPortal>
-        )}
-      </FloatingNode>
-    </>
-  );
-}
+// import Tst from "./tst";
 
 function App() {
   useEffect(() => {
@@ -56,17 +19,6 @@ function App() {
   }, []);
 
   return (
-    // <FloatingTree>
-    //   <Popover
-    //     content={
-    //       <Popover content="Nested content">
-    //         <button>Nested reference</button>
-    //       </Popover>
-    //     }
-    //   >
-    //     <button>Root reference</button>
-    //   </Popover>
-    // </FloatingTree>
     <div className="">
         <Router >
             <div className="flex flex-col">
@@ -76,6 +28,7 @@ function App() {
                         <Route path="/" element={<Search />} />
                         <Route path="/create" element={<Create />} />
                         <Route path="/dashboard/*" element={<Dashboard />} />
+                        {/* <Route path="tst" element={<Tst />} /> */}
                         <Route path="*" element={
                             <div className='flex justify-center items-center h-screen w-screen'>
                             <h1 className='text-6xl text-ellipsis text-black font-black'>FROM REACT</h1>

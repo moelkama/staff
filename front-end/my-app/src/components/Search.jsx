@@ -3,6 +3,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faEye, faPrint } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useState } from "react";
 import Loading from "./loading";
+// import { createListCollection } from "@chakra-ui/react"
+// import {
+//   SelectContent,
+//   SelectItem,
+//   SelectLabel,
+//   SelectRoot,
+//   SelectTrigger,
+//   SelectValueText,
+// } from "@/components/ui/select"
 
 function Table( {orders} ) {
     if (orders.length === 0)
@@ -54,6 +63,23 @@ function Table( {orders} ) {
     );
 }
 
+// const Select = (items) => {
+//   return (
+//     <SelectRoot collection={items} size="sm" width="320px">
+//       <SelectLabel>Select framework</SelectLabel>
+//       <SelectTrigger>
+//         <SelectValueText placeholder="Select movie" />
+//       </SelectTrigger>
+//       <SelectContent>
+//         {items.items.map((movie) => (
+//           <SelectItem item={movie} key={movie.value}>
+//             {movie.label}
+//           </SelectItem>
+//         ))}
+//       </SelectContent>
+//     </SelectRoot>
+//   )
+// }
 
 export default function Search() {
     const [orders, set_orders] = useState([]);
@@ -109,6 +135,14 @@ export default function Search() {
                 <select onChange={handleChange} defaultValue={period_time} className="w-40 h-10 rounded-xl border border-gray-300">
                     {period_times.map( (pt) => <option key={pt} value={pt}>{pt}</option>)}
                 </select>
+                {/* <Select items={createListCollection({
+                    items: [
+                        { label: "React.js", value: "react" },
+                        { label: "Vue.js", value: "vue" },
+                        { label: "Angular", value: "angular" },
+                        { label: "Svelte", value: "svelte" },
+                    ],
+                    })} /> */}
             </div>
             {loading ?
                 <Loading />
