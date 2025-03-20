@@ -13,13 +13,13 @@ services:
     networks:
       - local_network
 
-  frontend:
-    container_name: frontend
-    build:
-      context: ./front-end
-      dockerfile: Dockerfile
-    volumes:
-      - ./front-end/my-app/:/app
+  # frontend:
+  #   container_name: frontend
+  #   build:
+  #     context: ./front-end
+  #     dockerfile: Dockerfile
+  #   volumes:
+      # - ./front-end/my-app/:/app
   #   env_file:
   #     - .env
   #   networks:
