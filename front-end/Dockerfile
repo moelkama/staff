@@ -3,15 +3,15 @@ FROM node:18
 
 WORKDIR /app
 
-# COPY package.json package-lock.json ./
+COPY package.json package-lock.json ./
 
-# RUN npm install
+RUN npm install
 
 # COPY . .
 
 # EXPOSE 3000
 
 # Start the React development server
-CMD ["npm", "start"]
-# CMD ["npm", "run", "build"]
+# CMD ["npm", "start"]
+CMD ["npm", "run", "build"]
 # CMD ["tail", "-f"]
