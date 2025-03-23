@@ -14,31 +14,31 @@ services:
       - local_network
     restart: always
 
-  frontend:
-    container_name: frontend
-    build:
-      context: ./front-end
-      dockerfile: Dockerfile
-    volumes:
-      - ./front-end/my-app/:/app
-    env_file:
-      - .env
-    networks:
-      - local_network
+  # frontend:
+  #   container_name: frontend
+  #   build:
+  #     context: ./front-end
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - ./front-end/my-app/:/app
+  #   env_file:
+  #     - .env
+  #   networks:
+  #     - local_network
 
-  nginx:
-    depends_on:
-      - backend
-      # - frontend
-    image: nginx:stable
-    container_name: nginx
-    volumes:
-      - ./nginx/config.conf:/etc/nginx/conf.d/default.conf
-      - ./front-end/my-app/build/:/usr/share/nginx/html
-    ports:
-      - "80:80"
-    networks:
-      - local_network
+  # nginx:
+  #   depends_on:
+  #     - backend
+  #     # - frontend
+  #   image: nginx:stable
+  #   container_name: nginx
+  #   volumes:
+  #     - ./nginx/config.conf:/etc/nginx/conf.d/default.conf
+  #     - ./front-end/my-app/build/:/usr/share/nginx/html
+  #   ports:
+  #     - "80:80"
+  #   networks:
+  #     - local_network
 
 networks:
   local_network:
