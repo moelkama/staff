@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  backend:
+    container_name: backend
+    build:
+      context: ./back-end
+      dockerfile: Dockerfile.product
+    volumes:
+      - ./back-end/myproject/:/usr/src/app
+    env_file:
+      - .env
+    networks:
+      - local_network
+    restart: always
+
+  nginx:
+    depends_on:
+      - backend
+    container_name: nginx
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile.product
+    ports:
+      - "80:80"
+    networks:
+      - local_network
+    restart: always
+
+networks:
+  local_network:
+    driver: bridge
