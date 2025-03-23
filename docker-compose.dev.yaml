@@ -14,17 +14,17 @@ services:
       - local_network
     restart: always
 
-  # frontend:
-  #   container_name: frontend
-  #   build:
-  #     context: ./front-end
-  #     dockerfile: Dockerfile
-  #   volumes:
-  #     - ./front-end/my-app/:/app
-  #   env_file:
-  #     - .env
-  #   networks:
-  #     - local_network
+  frontend:
+    container_name: frontend
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./front-end/my-app/:/app
+    env_file:
+      - .env
+    networks:
+      - local_network
 
   nginx:
     depends_on:
